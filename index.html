@@ -455,7 +455,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
 
 #view-map .dayfilter button[aria-pressed="true"]{background:var(--larch);border-color:var(--larch);color:#241a05;font-weight:700}
 /* ===== 缩放控件 ===== */
-#view-map .zoomctl{position:absolute;right:18px;bottom:18px;z-index:30;display:flex;flex-direction:column;gap:1px}
+#view-map .zoomctl{position:absolute;right:18px;top:50%;transform:translateY(-50%);z-index:30;display:flex;flex-direction:column;gap:1px}
 
 #view-map .zoomctl button{
   width:34px;height:34px;border:1px solid var(--line);background:rgba(21,36,32,.92);
@@ -494,13 +494,13 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
 
 #view-map .node circle.dot{stroke:var(--ink);stroke-width:2;transition:r .18s}
 
-#view-map .node.stay circle.dot{fill:var(--larch);r:7}
+#view-map .node.n-stay circle.dot{fill:var(--larch);r:7}
 
-#view-map .node.pass circle.dot{fill:var(--ink-3);stroke:var(--larch);r:5.5}
+#view-map .node.n-pass circle.dot{fill:var(--ink-3);stroke:var(--larch);r:5.5}
 
-#view-map .node.spot circle.dot{fill:var(--birch);r:4.5}
+#view-map .node.n-spot circle.dot{fill:var(--birch);r:4.5}
 
-#view-map .node.gate circle.dot{fill:var(--border-red);r:6}
+#view-map .node.n-gate circle.dot{fill:var(--border-red);r:6}
 
 #view-map .node:hover circle.dot, #view-map .node.on circle.dot{r:10}
 
@@ -531,26 +531,27 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
 }
 /* ===== 图例 ===== */
 #view-map .legend{
-  position:absolute;top:64px;right:18px;z-index:25;
-  border:1px solid var(--line);background:rgba(21,36,32,.92);padding:11px 13px;
-  font-size:11.5px;color:var(--paper-dim);
+  position:absolute;right:18px;bottom:18px;z-index:25;
+  display:flex;flex-direction:column;gap:6px;
+  border:1px solid var(--line);background:rgba(21,36,32,.9);padding:9px 12px;
+  font-size:11px;color:var(--paper-dim);backdrop-filter:blur(6px);
 }
 
-#view-map .legend div{display:flex;align-items:center;gap:8px;margin-bottom:6px;white-space:nowrap}
+#view-map .legend div{display:flex;align-items:center;gap:7px;margin-bottom:0;white-space:nowrap}
 
 #view-map .legend div:last-child{margin-bottom:0}
 
-#view-map .lg-line{width:20px;height:0;border-top:2.6px solid var(--larch)}
+#view-map .lg-line{flex:0 0 auto;width:20px;height:0;border-top:2.6px solid var(--larch)}
 
 #view-map .lg-line.dash{border-top:2px dashed var(--paper-dim)}
 
-#view-map .lg-dot{width:10px;height:10px;border-radius:50%;background:var(--larch);border:1.5px solid var(--ink)}
+#view-map .lg-dot{flex:0 0 auto;width:10px;height:10px;border-radius:50%;background:var(--larch);border:1.5px solid var(--ink)}
 
 #view-map .lg-dot.pass{background:var(--ink-3);border-color:var(--larch)}
 
 #view-map .lg-dot.spot{background:var(--birch);width:8px;height:8px}
 
-#view-map .lg-dot.gate{background:var(--border-red)}
+#view-map .lg-dot.lgate{background:var(--border-red)}
 /* ===== 详情面板 ===== */
 #view-map .p-hd{padding:20px 20px 0}
 
@@ -648,6 +649,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
 #view-map .empty li{margin-bottom:7px}
 /* ===== 移动端 ===== */
 #view-map .sheet-grip{display:none}
+
 @media (max-width:900px){
 
 #view-map .app{grid-template-columns:1fr;height:auto}
@@ -659,13 +661,13 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
     max-height:none;overflow:visible;
   }
 
-#view-map .legend{top:auto;bottom:64px;right:12px;transform:scale(.92);transform-origin:bottom right}
+#view-map .legend{right:12px;bottom:auto;top:56px;transform:scale(.88);transform-origin:top right}
 
 #view-map .dayfilter{left:12px;bottom:12px;gap:4px}
 
 #view-map .dayfilter button{padding:5px 8px;font-size:10.5px}
 
-#view-map .zoomctl{right:12px;bottom:12px}
+#view-map .zoomctl{right:12px;top:50%;bottom:auto}
 
 #view-map .topbar{padding:12px}
 
@@ -678,9 +680,84 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
     margin:9px auto 0;border-radius:2px;
   }
 }
+/* ===== 动效与质感强化 ===== */
+@keyframes flow{ to{ stroke-dashoffset:-1000; } }
+
+@keyframes pulse{
+  0%{ r:9; opacity:.55 } 70%{ r:26; opacity:0 } 100%{ r:26; opacity:0 }
+}
+
+@keyframes drawin{ to{ stroke-dashoffset:0; } }
+
+@keyframes fadeup{ from{ opacity:0; transform:translateY(10px) } to{ opacity:1; transform:none } }
+
+@keyframes snowdrift{
+  0%{ transform:translate(0,0); opacity:0 }
+  10%{ opacity:.5 }
+  100%{ transform:translate(-14px,44px); opacity:0 }
+}
+
+@keyframes shimmer{ 0%,100%{ opacity:.30 } 50%{ opacity:.62 } }
+
+@keyframes cloudpan{ from{ transform:translateX(-40px) } to{ transform:translateX(1040px) } }
+/* 路线：底衬 + 流光行进 */
+#view-map .rd.drive{stroke:url(#gradDrive);stroke-width:3}
+
+#view-map .rd.shuttle{stroke:var(--paper-dim);stroke-width:2;stroke-dasharray:7 6;opacity:.85}
+
+#view-map .rdglow{fill:none;stroke:var(--larch);stroke-width:9;opacity:.10;filter:url(#softGlow);stroke-linecap:round}
+
+#view-map .rdflow{
+  fill:none;stroke:#fff6df;stroke-width:2.4;stroke-linecap:round;
+  stroke-dasharray:16 150;opacity:.85;
+  animation:flow 5.5s linear infinite;
+}
+
+#view-map .leg-shuttle .rdflow{stroke:#e8f0f2;stroke-dasharray:9 120;animation-duration:7s;opacity:.6}
+/* 入场：路线绘制 */
+#view-map .rd.drawing{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:drawin 1.5s cubic-bezier(.4,0,.2,1) forwards}
+/* 站点：脉冲与抬升 */
+#view-map .node circle.pulse{fill:none;stroke:var(--larch);stroke-width:2;opacity:0;pointer-events:none}
+
+#view-map .node.n-stay circle.pulse{animation:pulse 3.4s cubic-bezier(.2,.6,.3,1) infinite}
+
+#view-map .node.n-gate circle.pulse{stroke:var(--border-red);animation:pulse 2.6s cubic-bezier(.2,.6,.3,1) infinite}
+
+#view-map .node circle.dot{transition:r .26s cubic-bezier(.34,1.56,.64,1),fill .2s}
+
+#view-map .node text.lb, #view-map .node text.sub{transition:opacity .2s}
+
+#view-map .node.on circle.ring{animation:shimmer 2.4s ease-in-out infinite}
+
+#view-map .node{transition:opacity .3s}
+
+#view-map .node.enter{animation:fadeup .5s cubic-bezier(.2,.8,.2,1) backwards}
+/* 地形质感 */
+#view-map .contour{fill:none;stroke:var(--line-2);stroke-width:.8;opacity:.30}
+
+#view-map .contour.hi{opacity:.5;stroke-width:1}
+
+#view-map .hillshade{opacity:.5}
+
+#view-map .snowcap{fill:none;stroke:#dfeaec;stroke-width:1.4;opacity:.30}
+
+#view-map .lake{fill:url(#gradLake);stroke:#4a7f90;stroke-width:1;opacity:.9}
+
+#view-map .lakeglint{fill:none;stroke:#cfe9f0;stroke-width:.9;opacity:.45;animation:shimmer 5s ease-in-out infinite}
+
+#view-map .snowflake{fill:#e9f2f5;opacity:0;animation:snowdrift linear infinite}
+
+#view-map .cloudband{fill:#8fb3bd;opacity:.022;animation:cloudpan 46s linear infinite}
+
+#view-map .gridline{stroke:var(--line);stroke-width:.5;opacity:.16}
+
+#view-map .gridlabel{font-family:var(--mono);font-size:8px;fill:var(--paper-dim);opacity:.3}
+
 @media (prefers-reduced-motion:reduce){
 
-#view-map *{transition:none!important}
+#view-map *{transition:none!important;animation:none!important}
+
+#view-map .rdflow, #view-map .snowflake, #view-map .cloudband, #view-map .lakeglint{display:none}
 }
 
 </style>
@@ -1296,13 +1373,47 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
       <div><span class="lg-dot"></span> 住宿点</div>
       <div><span class="lg-dot pass"></span> 门票站 / 中转</div>
       <div><span class="lg-dot spot"></span> 景点</div>
-      <div><span class="lg-dot gate"></span> 管控节点</div>
+      <div><span class="lg-dot lgate"></span> 管控节点</div>
     </div>
 
     <svg class="map" id="map" viewBox="0 0 1000 760" preserveAspectRatio="xMidYMid meet"
          role="application" aria-label="行程地图，可点击站点查看详情">
+      <defs>
+        <linearGradient id="gradDrive" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#c9871f"/>
+          <stop offset="50%" stop-color="#e3a534"/>
+          <stop offset="100%" stop-color="#f0cf8a"/>
+        </linearGradient>
+        <linearGradient id="gradSnow" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#f2f7f8" stop-opacity=".9"/>
+          <stop offset="100%" stop-color="#8fa8a4" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="gradLake" x1="0" y1="0" x2="0.3" y2="1">
+          <stop offset="0%" stop-color="#2f6f7d"/>
+          <stop offset="100%" stop-color="#17414c"/>
+        </linearGradient>
+        <linearGradient id="gradHill" x1="0" y1="0" x2="0.6" y2="1">
+          <stop offset="0%" stop-color="#20362c"/>
+          <stop offset="100%" stop-color="#0e1a16" stop-opacity="0"/>
+        </linearGradient>
+        <radialGradient id="gradBasin" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#16261f"/>
+          <stop offset="100%" stop-color="#0e1a16" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="5" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="hillBlur" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="7"/>
+        </filter>
+      </defs>
       <g id="viewport">
+        <g id="layer-grid"></g>
+        <g id="layer-relief"></g>
         <g id="layer-terrain"></g>
+        <g id="layer-water"></g>
+        <g id="layer-weather"></g>
         <g id="layer-zone"></g>
         <g id="layer-roads"></g>
         <g id="layer-nodes"></g>
@@ -1637,9 +1748,10 @@ var MapView=(function(){
     var lons=core.map(function(s){return s.lon}), lats=core.map(function(s){return s.lat});
     var lon0=Math.min.apply(null,lons)-0.10, lon1=Math.max.apply(null,lons)+0.10;
     var yA=mercY(Math.min.apply(null,lats)-0.06), yB=mercY(Math.max.apply(null,lats)+0.06);
-    var PAD_T=88, PAD_B=132;               /* 顶部留给标题、底部留给乌市引出 */
+    var PAD_T=104, PAD_B=140;               /* 顶部留给标题、底部留给乌市引出 */
+    var PAD_L=54, PAD_R=150;   /* 右侧留给图例与缩放控件 */
     function proj(lon,lat){
-      var x=(lon-lon0)/(lon1-lon0)*W;
+      var x=PAD_L+(lon-lon0)/(lon1-lon0)*(W-PAD_L-PAD_R);
       var y=(H-PAD_T-PAD_B)-((mercY(lat)-yA)/(yB-yA))*(H-PAD_T-PAD_B)+PAD_T;
       return [x,y];
     }
@@ -1647,7 +1759,7 @@ var MapView=(function(){
     SITES.forEach(function(s){
       if(s.id==="urumqi"){
         /* 乌市实际在南方 400+ km 外，按真实方位放在画布底部并标注断裂 */
-        POS[s.id]=[762,H-46];
+        POS[s.id]=[700,H-58];
       }else{
         POS[s.id]=proj(s.lon,s.lat);
       }
@@ -1662,23 +1774,130 @@ var MapView=(function(){
       if(attrs) for(var k in attrs) e.setAttribute(k,attrs[k]);
       return e;
     }
+    var gGrid=document.getElementById("layer-grid");
+    var gRelief=document.getElementById("layer-relief");
     var gTerrain=document.getElementById("layer-terrain");
+    var gWater=document.getElementById("layer-water");
+    var gWeather=document.getElementById("layer-weather");
     var gZone=document.getElementById("layer-zone");
     var gRoads=document.getElementById("layer-roads");
     var gNodes=document.getElementById("layer-nodes");
     
-    /* --- 地形底纹：阿尔泰山脊线示意 --- */
-    (function terrain(){
-      var ridges=[
-        "M 20 60 Q 150 20 300 78 T 620 52 T 980 96",
-        "M 10 130 Q 180 92 330 148 T 660 120 T 990 168",
-        "M 40 208 Q 210 176 360 226 T 700 200 T 986 244",
-        "M 30 292 Q 220 262 372 306 T 720 284 T 980 322"
+    /* --- 经纬网格（按真实度数） --- */
+    (function grid(){
+      for(var lon=86.5;lon<=88.5;lon+=0.5){
+        var a=proj(lon,47.60), b=proj(lon,48.95);
+        gGrid.appendChild(el("line",{x1:a[0].toFixed(1),y1:a[1].toFixed(1),
+          x2:b[0].toFixed(1),y2:b[1].toFixed(1),"class":"gridline"}));
+        var t=el("text",{x:(a[0]+3).toFixed(1),y:(H-PAD_B+16).toFixed(1),"class":"gridlabel"});
+        t.textContent=lon.toFixed(1)+"E";
+        gGrid.appendChild(t);
+      }
+      for(var lat=47.75;lat<=48.95;lat+=0.25){
+        var c=proj(86.55,lat), d=proj(88.30,lat);
+        gGrid.appendChild(el("line",{x1:c[0].toFixed(1),y1:c[1].toFixed(1),
+          x2:d[0].toFixed(1),y2:d[1].toFixed(1),"class":"gridline"}));
+        var t2=el("text",{x:4,y:(c[1]-3).toFixed(1),"class":"gridlabel"});
+        t2.textContent=lat.toFixed(2)+"N";
+        gGrid.appendChild(t2);
+      }
+    })();
+    
+    /* --- 山体阴影块：阿尔泰主脉在西北，向东南递降 --- */
+    (function relief(){
+      var masses=[
+        {d:"M -20 -20 L 420 -20 Q 330 90 210 130 Q 90 170 -20 150 Z",o:.85},
+        {d:"M 120 40 Q 300 20 430 96 Q 300 180 150 168 Q 60 140 120 40 Z",o:.6},
+        {d:"M -20 150 Q 120 190 250 220 Q 150 300 -20 300 Z",o:.5},
+        {d:"M 430 60 Q 620 40 780 130 Q 640 230 470 190 Q 400 140 430 60 Z",o:.45},
+        {d:"M 760 120 Q 930 150 1020 260 L 1020 120 Z",o:.35}
       ];
-      ridges.forEach(function(d){ gTerrain.appendChild(el("path",{d:d,"class":"ridge"})); });
-      /* 额尔齐斯河 + 布尔津河示意 */
-      gTerrain.appendChild(el("path",{d:"M 250 700 Q 150 660 60 672",class:"river"}));
-      gTerrain.appendChild(el("path",{d:"M 250 700 Q 300 560 262 400 T 300 250",class:"river"}));
+      masses.forEach(function(m){
+        gRelief.appendChild(el("path",{d:m.d,fill:"url(#gradHill)",opacity:m.o,
+          filter:"url(#hillBlur)","class":"hillshade"}));
+      });
+      /* 额尔齐斯河谷盆地：南部开阔地的暖色洼地 */
+      gRelief.appendChild(el("ellipse",{cx:210,cy:660,rx:260,ry:130,fill:"url(#gradBasin)",opacity:.8}));
+    })();
+    
+    /* --- 等高线群：围绕主脉的同心曲线 --- */
+    (function contours(){
+      var sets=[
+        {cx:180,cy:60,rings:7,rx:200,ry:90,step:34,rot:-14},
+        {cx:470,cy:110,rings:5,rx:150,ry:70,step:30,rot:8},
+        {cx:840,cy:210,rings:4,rx:130,ry:64,step:28,rot:22}
+      ];
+      sets.forEach(function(s){
+        for(var i=0;i<s.rings;i++){
+          var rx=s.rx-i*s.step, ry=s.ry-i*s.step*0.46;
+          if(rx<16||ry<8) break;
+          var e=el("ellipse",{cx:s.cx,cy:s.cy,rx:rx.toFixed(1),ry:ry.toFixed(1),
+            "class":"contour"+(i>=s.rings-2?" hi":""),
+            transform:"rotate("+s.rot+" "+s.cx+" "+s.cy+")"});
+          gTerrain.appendChild(e);
+        }
+        /* 雪线以上填白 */
+        var snow=el("ellipse",{cx:s.cx,cy:s.cy,
+          rx:(s.rx-(s.rings-2)*s.step).toFixed(1),
+          ry:(s.ry-(s.rings-2)*s.step*0.46).toFixed(1),
+          "class":"snowcap",transform:"rotate("+s.rot+" "+s.cx+" "+s.cy+")"});
+        gTerrain.appendChild(snow);
+      });
+    })();
+    
+    /* --- 水体：喀纳斯湖（真实走向，西南—东北狭长）+ 河流 --- */
+    (function water(){
+      var kl=proj(87.02,48.76);
+      var lake=el("path",{
+        d:"M "+(kl[0]-26)+" "+(kl[1]+44)+
+          " Q "+(kl[0]-8)+" "+(kl[1]+8)+" "+(kl[0]+4)+" "+(kl[1]-26)+
+          " Q "+(kl[0]+12)+" "+(kl[1]-52)+" "+(kl[0]+22)+" "+(kl[1]-74)+
+          " Q "+(kl[0]+30)+" "+(kl[1]-52)+" "+(kl[0]+20)+" "+(kl[1]-22)+
+          " Q "+(kl[0]+8)+" "+(kl[1]+14)+" "+(kl[0]-14)+" "+(kl[1]+50)+" Z",
+        "class":"lake"});
+      gWater.appendChild(lake);
+      var glint=el("path",{
+        d:"M "+(kl[0]-16)+" "+(kl[1]+34)+" Q "+(kl[0]+2)+" "+(kl[1]-4)+" "+(kl[0]+14)+" "+(kl[1]-48),
+        "class":"lakeglint"});
+      gWater.appendChild(glint);
+      var lb=el("text",{x:(kl[0]+34),y:(kl[1]-34),"class":"gridlabel"});
+      lb.setAttribute("style","font-size:9.5px;opacity:.5");
+      lb.textContent="喀纳斯湖";
+      gWater.appendChild(lb);
+    
+      /* 额尔齐斯河：布尔津往西，接五彩滩 */
+      var b=proj(86.875,47.702), w=proj(86.681,47.838);
+      gWater.appendChild(el("path",{
+        d:"M "+(b[0]+90)+" "+(b[1]+16)+" Q "+b[0]+" "+(b[1]-4)+" "+w[0]+" "+w[1]+
+          " Q "+(w[0]-40)+" "+(w[1]+6)+" -20 "+(w[1]+22),
+        "class":"river"}));
+      /* 布尔津河：北接禾木方向 */
+      var hm=proj(87.433,48.569);
+      gWater.appendChild(el("path",{
+        d:"M "+b[0]+" "+b[1]+" Q "+(b[0]+120)+" "+(b[1]-180)+" "+(hm[0]-40)+" "+(hm[1]+90)+
+          " Q "+(hm[0]-6)+" "+(hm[1]+30)+" "+hm[0]+" "+hm[1],
+        "class":"river"}));
+      /* 喀纳斯河出湖南流 */
+      gWater.appendChild(el("path",{
+        d:"M "+(kl[0]-20)+" "+(kl[1]+46)+" Q "+(kl[0]-4)+" "+(kl[1]+120)+" "+(proj(87.171,48.492)[0]-14)+" "+proj(87.171,48.492)[1],
+        "class":"river"}));
+    })();
+    
+    /* --- 天气层：高空云带 + 山区飘雪（呼应去年同期降雪） --- */
+    (function weather(){
+      [90,250,420].forEach(function(y,i){
+        var c=el("ellipse",{cx:-60,cy:y,rx:150,ry:16,"class":"cloudband",filter:"url(#hillBlur)"});
+        c.style.animationDelay=(i*15)+"s";
+        gWeather.appendChild(c);
+      });
+      for(var i=0;i<26;i++){
+        var x=20+Math.random()*560, y=10+Math.random()*260;
+        var f=el("circle",{cx:x.toFixed(1),cy:y.toFixed(1),r:(0.9+Math.random()*1.1).toFixed(1),
+          "class":"snowflake"});
+        f.style.animationDuration=(5+Math.random()*7).toFixed(1)+"s";
+        f.style.animationDelay=(Math.random()*9).toFixed(1)+"s";
+        gWeather.appendChild(f);
+      }
     })();
     
     /* --- 边境管理区示意带 --- */
@@ -1707,10 +1926,16 @@ var MapView=(function(){
     }
     LEGS.forEach(function(leg){
       var d=legPath(leg);
-      var g=el("g",{"data-leg":leg.id,"data-day":leg.day,"data-plans":leg.plans.join(",")});
+      var g=el("g",{"data-leg":leg.id,"data-day":leg.day,"data-plans":leg.plans.join(","),
+        "class":"leg-"+leg.mode});
+      if(leg.mode==="drive") g.appendChild(el("path",{d:d,"class":"rdglow"}));
       g.appendChild(el("path",{d:d,"class":"rdcase"}));
       var p=el("path",{d:d,"class":"rd "+leg.mode,id:"path-"+leg.id});
       g.appendChild(p);
+      /* 流光：沿路径行进的亮点，指示行进方向 */
+      var fl=el("path",{d:d,"class":"rdflow"});
+      fl.style.animationDelay=(leg.day*0.45)+"s";
+      g.appendChild(fl);
       if(leg.label){
         var tp=el("text",{"class":"roadlabel","dy":-7});
         var tpath=el("textPath",{href:"#path-"+leg.id,startOffset:"50%","text-anchor":"middle"});
@@ -1723,15 +1948,16 @@ var MapView=(function(){
     
     /* --- 站点 --- */
     var LABEL_POS={
-      urumqi:[0,26],altay:[0,-20],hemu:[14,-18],jiadengyu:[-8,26],
-      kanas:[16,-18],tiereketi:[8,28],baihaba:[-14,-20],naren:[16,-16],
-      burqin:[18,-14]
+      urumqi:[0,28],altay:[0,-22],hemu:[16,-18],jiadengyu:[-10,28],
+      kanas:[-16,24],tiereketi:[8,30],baihaba:[-16,-20],naren:[18,-16],
+      burqin:[20,-14]
     };
     SITES.forEach(function(s,i){
       var p=POS[s.id];
-      var g=el("g",{"class":"node "+s.kind,"data-id":s.id,"data-days":s.days.join(","),
+      var g=el("g",{"class":"node n-"+s.kind,"data-id":s.id,"data-days":s.days.join(","),
         tabindex:"0",role:"button","aria-label":s.name+" 详情"});
       g.setAttribute("transform","translate("+p[0].toFixed(1)+","+p[1].toFixed(1)+")");
+      g.appendChild(el("circle",{"class":"pulse",r:9}));
       g.appendChild(el("circle",{"class":"ring",r:15,opacity:0}));
       g.appendChild(el("circle",{"class":"hit",r:22}));
       g.appendChild(el("circle",{"class":"dot"}));
@@ -1743,6 +1969,8 @@ var MapView=(function(){
         "text-anchor":off[0]>6?"start":(off[0]<-6?"end":"middle")});
       sub.textContent=s.kind==="stay"&&s.stay?"住宿":(s.kind==="gate"?"管控节点":(s.kind==="pass"?"门票站":"景点"));
       g.appendChild(sub);
+      g.classList.add("enter");
+      g.style.animationDelay=(0.35+i*0.07).toFixed(2)+"s";
       gNodes.appendChild(g);
     });
     
@@ -1973,6 +2201,20 @@ var MapView=(function(){
     document.getElementById("zreset").addEventListener("click",function(){
       view={x:0,y:0,k:1}; applyView();
     });
+    
+    /* ===== 入场动画：路线按天依次绘出 ===== */
+    (function intro(){
+      var paths=gRoads.querySelectorAll(".rd");
+      for(var i=0;i<paths.length;i++){
+        var p=paths[i];
+        var len=0;
+        try{ len=p.getTotalLength(); }catch(e){ len=0; }
+        if(!len) continue;
+        p.style.setProperty("--len",len.toFixed(0));
+        p.classList.add("drawing");
+        p.style.animationDelay=(0.15+i*0.09).toFixed(2)+"s";
+      }
+    })();
     
     /* ===== 初始化 ===== */
     applyView();
