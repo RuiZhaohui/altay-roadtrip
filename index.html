@@ -543,7 +543,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
 
 #view-map .lg-line{flex:0 0 auto;width:20px;height:0;border-top:2.6px solid var(--larch)}
 
-#view-map .lg-line.dash{border-top:2px dashed var(--paper-dim)}
+#view-map .lg-line.dash{border-top:2.6px dashed #7fa9b8}
 
 #view-map .lg-dot{flex:0 0 auto;width:10px;height:10px;border-radius:50%;background:var(--larch);border:1.5px solid var(--ink)}
 
@@ -703,9 +703,11 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
 /* 路线：底衬 + 流光行进 */
 #view-map .rd.drive{stroke:url(#gradDrive);stroke-width:3}
 
-#view-map .rd.shuttle{stroke:var(--paper-dim);stroke-width:2;stroke-dasharray:7 6;opacity:.85}
+#view-map .rd.shuttle{stroke:#7fa9b8;stroke-width:2.6;stroke-dasharray:11 9;opacity:.95;stroke-linecap:butt}
 
-#view-map .rdglow{fill:none;stroke:var(--larch);stroke-width:9;opacity:.10;filter:url(#softGlow);stroke-linecap:round}
+#view-map .rdglow{fill:none;stroke:var(--larch);stroke-width:8;opacity:.13;stroke-linecap:round}
+
+#view-map .rdglow.shuttleglow{stroke:#7fa9b8;opacity:.13}
 
 #view-map .rdflow{
   fill:none;stroke:#fff6df;stroke-width:2.4;stroke-linecap:round;
@@ -713,7 +715,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
   animation:flow 5.5s linear infinite;
 }
 
-#view-map .leg-shuttle .rdflow{stroke:#e8f0f2;stroke-dasharray:9 120;animation-duration:7s;opacity:.6}
+#view-map .leg-shuttle .rdflow{stroke:#cfe9f5;stroke-width:2;stroke-dasharray:7 130;animation-duration:7.5s;opacity:.75}
 /* 入场：路线绘制 */
 #view-map .rd.drawing{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:drawin 1.5s cubic-bezier(.4,0,.2,1) forwards}
 /* 站点：脉冲与抬升 */
@@ -1368,8 +1370,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
     </div>
 
     <div class="legend">
-      <div><span class="lg-line"></span> 自驾路段</div>
-      <div><span class="lg-line dash"></span> 区间车 / 换乘</div>
+      <div><span class="lg-line"></span> 自驾（可自己开）</div>
+      <div><span class="lg-line dash"></span> 区间车（车开不进）</div>
       <div><span class="lg-dot"></span> 住宿点</div>
       <div><span class="lg-dot pass"></span> 门票站 / 中转</div>
       <div><span class="lg-dot spot"></span> 景点</div>
@@ -1813,8 +1815,8 @@ var MapView=(function(){
         {d:"M 760 120 Q 930 150 1020 260 L 1020 120 Z",o:.35}
       ];
       masses.forEach(function(m){
-        gRelief.appendChild(el("path",{d:m.d,fill:"url(#gradHill)",opacity:m.o,
-          filter:"url(#hillBlur)","class":"hillshade"}));
+        gRelief.appendChild(el("path",{d:m.d,fill:"url(#gradHill)",opacity:m.o*0.8,
+          "class":"hillshade"}));
       });
       /* 额尔齐斯河谷盆地：南部开阔地的暖色洼地 */
       gRelief.appendChild(el("ellipse",{cx:210,cy:660,rx:260,ry:130,fill:"url(#gradBasin)",opacity:.8}));
@@ -1886,11 +1888,11 @@ var MapView=(function(){
     /* --- 天气层：高空云带 + 山区飘雪（呼应去年同期降雪） --- */
     (function weather(){
       [90,250,420].forEach(function(y,i){
-        var c=el("ellipse",{cx:-60,cy:y,rx:150,ry:16,"class":"cloudband",filter:"url(#hillBlur)"});
+        var c=el("ellipse",{cx:-60,cy:y,rx:160,ry:20,"class":"cloudband"});
         c.style.animationDelay=(i*15)+"s";
         gWeather.appendChild(c);
       });
-      for(var i=0;i<26;i++){
+      for(var i=0;i<10;i++){
         var x=20+Math.random()*560, y=10+Math.random()*260;
         var f=el("circle",{cx:x.toFixed(1),cy:y.toFixed(1),r:(0.9+Math.random()*1.1).toFixed(1),
           "class":"snowflake"});
@@ -1929,6 +1931,7 @@ var MapView=(function(){
       var g=el("g",{"data-leg":leg.id,"data-day":leg.day,"data-plans":leg.plans.join(","),
         "class":"leg-"+leg.mode});
       if(leg.mode==="drive") g.appendChild(el("path",{d:d,"class":"rdglow"}));
+      else g.appendChild(el("path",{d:d,"class":"rdglow shuttleglow"}));
       g.appendChild(el("path",{d:d,"class":"rdcase"}));
       var p=el("path",{d:d,"class":"rd "+leg.mode,id:"path-"+leg.id});
       g.appendChild(p);
@@ -2206,13 +2209,26 @@ var MapView=(function(){
     (function intro(){
       var paths=gRoads.querySelectorAll(".rd");
       for(var i=0;i<paths.length;i++){
-        var p=paths[i];
-        var len=0;
-        try{ len=p.getTotalLength(); }catch(e){ len=0; }
-        if(!len) continue;
-        p.style.setProperty("--len",len.toFixed(0));
-        p.classList.add("drawing");
-        p.style.animationDelay=(0.15+i*0.09).toFixed(2)+"s";
+        (function(p,i){
+          var len=0;
+          try{ len=p.getTotalLength(); }catch(e){ len=0; }
+          if(!len) return;
+          p.style.setProperty("--len",len.toFixed(0));
+          p.classList.add("drawing");
+          p.style.animationDelay=(0.15+i*0.09).toFixed(2)+"s";
+          /* 绘制完成后必须移除 drawing：它的 stroke-dasharray 会覆盖
+             虚线（区间车）本身的短划样式，导致虚实无法区分。
+             animationend 在容器隐藏/动画被跳过时不会触发，因此同时用
+             定时器兜底，保证 dasharray 一定被还原。 */
+          var cleanup=function(){
+            if(!p.classList.contains("drawing")) return;
+            p.classList.remove("drawing");
+            p.style.removeProperty("--len");
+            p.style.removeProperty("animation-delay");
+          };
+          p.addEventListener("animationend",cleanup,{once:true});
+          setTimeout(cleanup, 2200+i*90);
+        })(paths[i],i);
       }
     })();
     
