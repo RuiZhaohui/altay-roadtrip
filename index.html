@@ -1,0 +1,2054 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>阿勒泰七日 · 行程路书与路线地图</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+
+/* ===== 设计 token：阿尔泰云杉墨绿 / 落叶松金 / 界碑红 ===== */
+:root{
+  --ink:#0e1a16;            /* 云杉林荫，最深 */
+  --ink-2:#152420;          /* 次级底 */
+  --ink-3:#1e3129;          /* 卡片底 */
+  --line:#2c4438;           /* 分隔线 */
+  --paper:#e8e4d6;          /* 桦木纸 */
+  --paper-dim:#a8b3a8;      /* 次级文字 */
+  --larch:#e3a534;          /* 落叶松金 —— 唯一强调色 */
+  --larch-soft:#f0cf8a;
+  --birch:#d9d2bb;          /* 白桦 */
+  --border-red:#c2452e;     /* 界碑红：仅用于边境/管控/截止 */
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  --serif:"Noto Serif SC",Songti SC,STSong,serif;
+  --sans:"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--ink);color:var(--paper);
+  font-family:var(--sans);font-weight:300;line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+img{display:block;width:100%;height:100%;object-fit:cover}
+a{color:var(--larch)}
+
+/* ===== 顶部：里程条 + 天数导航 ===== */
+.topbar{
+  position:sticky;top:0;z-index:60;
+  background:rgba(14,26,22,.94);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.progress{height:3px;background:var(--line)}
+.progress span{display:block;height:100%;width:0;background:var(--larch);transition:width .12s linear}
+.navwrap{
+  display:flex;align-items:center;gap:18px;
+  max-width:1180px;margin:0 auto;padding:10px 22px;
+}
+.brandmark{
+  font-family:var(--mono);font-size:11px;letter-spacing:.18em;
+  color:var(--paper-dim);white-space:nowrap;
+}
+.brandmark b{color:var(--larch);font-weight:700}
+.daynav{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex:1}
+.daynav::-webkit-scrollbar{display:none}
+.daynav button{
+  flex:0 0 auto;background:none;border:1px solid var(--line);color:var(--paper-dim);
+  font-family:var(--mono);font-size:11px;padding:6px 11px;cursor:pointer;
+  border-radius:2px;transition:.2s;
+}
+.daynav button:hover{border-color:var(--larch);color:var(--larch-soft)}
+.daynav button[aria-current="true"]{background:var(--larch);border-color:var(--larch);color:#241a05;font-weight:700}
+
+/* ===== HERO ===== */
+.hero{position:relative;min-height:88vh;display:flex;align-items:flex-end;overflow:hidden}
+.hero-img{position:absolute;inset:0}
+.hero-img::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(14,26,22,.62) 0%,rgba(14,26,22,.35) 42%,rgba(14,26,22,.97) 100%);
+}
+.hero-in{position:relative;max-width:1180px;margin:0 auto;padding:0 22px 54px;width:100%}
+.kicker{
+  font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:var(--larch);
+  border-left:2px solid var(--border-red);padding-left:10px;margin-bottom:20px;
+}
+h1{
+  font-family:var(--serif);font-weight:900;margin:0 0 4px;
+  font-size:clamp(38px,8.4vw,88px);line-height:1.02;letter-spacing:-.01em;
+}
+h1 em{font-style:normal;color:var(--larch);display:block}
+.hero-sub{
+  font-size:clamp(14px,1.5vw,17px);max-width:52ch;color:var(--birch);
+  margin:20px 0 30px;text-wrap:pretty;
+}
+.hero-stats{display:flex;flex-wrap:wrap;gap:12px}
+.stat{
+  border:1px solid var(--line);background:rgba(21,36,32,.78);
+  padding:12px 16px;min-width:132px;flex:1 1 132px;
+}
+.stat .n{font-family:var(--mono);font-size:26px;font-weight:700;color:var(--larch);line-height:1.1}
+.stat .n small{font-size:12px;color:var(--paper-dim);font-weight:400;margin-left:3px}
+.stat .l{font-size:11px;color:var(--paper-dim);letter-spacing:.06em;margin-top:3px}
+
+/* ===== 通用区块 ===== */
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin:0 0 26px;flex-wrap:wrap}
+.sec-head h2{
+  font-family:var(--serif);font-weight:700;font-size:clamp(22px,3.4vw,34px);margin:0;
+}
+.sec-head .tag{
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--paper-dim);
+}
+.rule{height:1px;background:var(--line);margin:0}
+
+/* ===== 方案切换 ===== */
+.planbar{
+  position:relative;border:1px solid var(--line);background:var(--ink-2);
+  padding:20px 22px;margin:56px 0 8px;
+}
+.planbar h3{font-family:var(--serif);font-size:18px;margin:0 0 6px;font-weight:700}
+.planbar p{margin:0;font-size:13.5px;color:var(--paper-dim);max-width:64ch}
+.switch{display:flex;gap:0;margin-top:16px;border:1px solid var(--line);width:fit-content;max-width:100%;flex-wrap:wrap}
+.switch button{
+  background:none;border:none;color:var(--paper-dim);cursor:pointer;
+  font-family:var(--sans);font-size:13px;padding:10px 18px;transition:.2s;
+}
+.switch button+button{border-left:1px solid var(--line)}
+.switch button[aria-pressed="true"]{background:var(--larch);color:#241a05;font-weight:700}
+.plannote{
+  font-family:var(--mono);font-size:11.5px;color:var(--larch-soft);
+  margin-top:12px;display:flex;gap:8px;align-items:flex-start;
+}
+.plannote svg{flex:0 0 auto;margin-top:2px}
+
+/* ===== 行程主轴（签名元素：公路中线） ===== */
+.road{position:relative;padding:40px 0 20px}
+.road::before{
+  content:"";position:absolute;left:26px;top:0;bottom:0;width:2px;
+  background:repeating-linear-gradient(180deg,var(--larch) 0 14px,transparent 14px 30px);
+  opacity:.5;
+}
+.marker{
+  position:absolute;left:19px;width:16px;height:16px;border-radius:50%;
+  background:var(--ink);border:2px solid var(--larch);
+  transition:top .1s linear;z-index:5;
+}
+.marker::after{
+  content:"";position:absolute;inset:3px;border-radius:50%;background:var(--larch);
+}
+.day{position:relative;padding:0 0 46px 66px}
+.day-no{
+  position:absolute;left:0;top:2px;width:52px;text-align:right;
+  font-family:var(--mono);font-size:11px;color:var(--paper-dim);line-height:1.35;
+}
+.day-no b{display:block;font-size:19px;color:var(--paper);font-weight:700}
+.day-card{border:1px solid var(--line);background:var(--ink-3);overflow:hidden}
+.day-card.transit{background:var(--ink-2)}
+.dc-head{padding:20px 22px 0}
+.route{
+  font-family:var(--serif);font-size:clamp(19px,2.5vw,26px);font-weight:700;
+  margin:0 0 6px;line-height:1.3;
+}
+.route span{color:var(--larch);font-family:var(--mono);font-size:.6em;font-weight:400;margin:0 6px}
+.stay{font-family:var(--mono);font-size:11.5px;color:var(--paper-dim);letter-spacing:.04em}
+.stay b{color:var(--birch);font-weight:400}
+.dc-body{padding:16px 22px 22px}
+.dc-body p{margin:0 0 12px;font-size:14.5px;color:var(--birch);text-wrap:pretty}
+.dc-body p:last-child{margin-bottom:0}
+.dc-body strong{color:var(--paper);font-weight:500}
+
+/* 里程条 */
+.meters{display:flex;flex-wrap:wrap;gap:1px;background:var(--line);margin:0}
+.meter{flex:1 1 96px;background:var(--ink-2);padding:11px 14px}
+.meter .v{font-family:var(--mono);font-size:16px;color:var(--larch-soft);font-weight:700}
+.meter .k{font-size:10.5px;color:var(--paper-dim);letter-spacing:.06em;margin-top:1px}
+
+/* 图片处理：不同日子不同画幅 —— 节奏来自路况而非模板 */
+.fig{position:relative;overflow:hidden;background:var(--ink-2)}
+.fig.band{aspect-ratio:21/7}
+.fig.wide{aspect-ratio:16/8}
+.fig.tall{aspect-ratio:4/3}
+.fig figcaption{
+  position:absolute;left:0;bottom:0;right:0;padding:22px 16px 10px;
+  background:linear-gradient(transparent,rgba(14,26,22,.9));
+  font-family:var(--mono);font-size:11px;color:var(--birch);letter-spacing:.04em;
+}
+.figs2{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}
+.figs3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line)}
+
+/* 闸门（签名元素之二：硬性时间窗口） */
+.gate{
+  border:1px solid var(--border-red);background:rgba(194,69,46,.09);
+  padding:18px 20px;margin:16px 0 0;
+}
+.gate.solo{margin:0}
+.gate-t{
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:#ea6a50;
+  display:flex;align-items:center;gap:8px;margin-bottom:9px;
+}
+.gate p{margin:0;font-size:14px;color:var(--birch)}
+.gate p+p{margin-top:8px}
+.gate b{color:#f5a48f;font-weight:500}
+
+/* 提示条 */
+.tip{
+  display:flex;gap:11px;align-items:flex-start;
+  border-left:2px solid var(--larch);padding:2px 0 2px 13px;margin:14px 0 0;
+  font-size:13.5px;color:var(--birch);
+}
+.tip .lab{
+  font-family:var(--mono);font-size:10.5px;color:var(--larch);letter-spacing:.1em;
+  flex:0 0 auto;padding-top:3px;
+}
+
+/* 分支内容显隐（不作用于切换按钮自身） */
+.day [data-plan],.dc-body [data-plan],main > section [data-plan]{display:none}
+.day [data-plan].on,.dc-body [data-plan].on,main > section [data-plan].on{display:block}
+.figs2[data-plan].on,.figs3[data-plan].on{display:grid}
+.meters[data-plan].on{display:flex}
+.switch button[data-plan]{display:block}
+
+/* ===== 倒计时闸门（独立区块） ===== */
+.deadline{
+  border:1px solid var(--border-red);background:
+    linear-gradient(180deg,rgba(194,69,46,.14),rgba(194,69,46,.04));
+  padding:clamp(22px,4vw,38px);margin:8px 0 0;
+}
+.deadline .kicker{border-left-color:var(--larch);color:#ea6a50}
+.deadline h3{font-family:var(--serif);font-size:clamp(20px,3.2vw,30px);margin:0 0 10px;font-weight:700}
+.clock{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0 14px}
+.clock div{
+  border:1px solid rgba(194,69,46,.5);background:rgba(14,26,22,.55);
+  padding:10px 14px;min-width:74px;text-align:center;
+}
+.clock .cv{font-family:var(--mono);font-size:26px;font-weight:700;color:#f5a48f;line-height:1.1}
+.clock .ck{font-size:10px;color:var(--paper-dim);letter-spacing:.1em;margin-top:2px}
+.deadline p{font-size:14px;color:var(--birch);margin:0;max-width:66ch}
+
+/* ===== 清单表 ===== */
+.checks{border:1px solid var(--line);border-bottom:none;margin:0}
+.chk{display:grid;grid-template-columns:126px 1fr;border-bottom:1px solid var(--line)}
+.chk-w{
+  padding:14px 16px;font-family:var(--mono);font-size:11.5px;
+  color:var(--larch-soft);border-right:1px solid var(--line);background:var(--ink-2);
+  letter-spacing:.04em;
+}
+.chk-w.hot{color:#f5a48f;background:rgba(194,69,46,.1)}
+.chk-b{padding:14px 18px;font-size:14px;color:var(--birch)}
+.chk-b b{color:var(--paper);font-weight:500}
+
+/* ===== 票务表 ===== */
+.tablewrap{overflow-x:auto;border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;min-width:520px}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--line);font-size:13.5px}
+th{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:var(--paper-dim);
+  background:var(--ink-2);font-weight:400;
+}
+td{color:var(--birch)}
+td b{color:var(--paper);font-weight:500}
+td.num{font-family:var(--mono);color:var(--larch-soft)}
+tr:last-child td{border-bottom:none}
+tfoot td{background:var(--ink-2);color:var(--paper)}
+
+/* ===== 速查卡高亮格 ===== */
+td.hotcell{color:#f5a48f;background:rgba(194,69,46,.07)}
+
+/* ===== 气温标尺 ===== */
+.climate{border:1px solid var(--line);background:var(--ink-2);padding:20px 22px;margin:0 0 22px}
+.cl-row{display:grid;grid-template-columns:158px 1fr 96px;gap:14px;align-items:center;margin-bottom:11px}
+.cl-k{font-size:12.5px;color:var(--paper-dim);letter-spacing:.02em}
+.cl-track{position:relative;height:8px;background:var(--ink);border:1px solid var(--line)}
+.cl-track span{
+  position:absolute;top:-1px;bottom:-1px;background:var(--birch);
+  transform:scaleX(0);transform-origin:left;transition:transform .8s cubic-bezier(.22,1,.36,1);
+}
+.climate.in .cl-track span{transform:scaleX(1)}
+.cl-v{font-family:var(--mono);font-size:13px;color:var(--larch-soft);text-align:right}
+.cl-scale{
+  display:flex;justify-content:space-between;margin-left:172px;
+  font-family:var(--mono);font-size:10px;color:var(--paper-dim);padding-top:3px;
+}
+
+/* ===== 装备三栏 ===== */
+.gearwrap{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.gearcol{background:var(--ink-3);padding:20px 20px 22px}
+.gc-h{
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--larch);
+  padding-bottom:11px;margin-bottom:13px;border-bottom:1px solid var(--line);
+}
+.gl{list-style:none;margin:0;padding:0}
+.gl li{
+  position:relative;padding-left:16px;margin-bottom:10px;
+  font-size:13.5px;color:var(--birch);line-height:1.65;text-wrap:pretty;
+}
+.gl li::before{
+  content:"";position:absolute;left:0;top:9px;width:5px;height:5px;
+  background:var(--larch);opacity:.75;
+}
+.gl li:last-child{margin-bottom:0}
+.gl b{color:var(--paper);font-weight:500}
+
+/* ===== 底部 ===== */
+footer{border-top:1px solid var(--line);margin-top:70px;padding:34px 0 60px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:flex-end}
+.foot-l{font-family:var(--serif);font-size:17px;font-weight:700;max-width:34ch;line-height:1.5}
+.foot-r{font-family:var(--mono);font-size:11px;color:var(--paper-dim);text-align:right;line-height:1.9}
+
+/* ===== 入场动效 ===== */
+.rise{opacity:0;transform:translateY(20px);transition:opacity .62s ease,transform .62s ease}
+.rise.in{opacity:1;transform:none}
+
+/* ===== 移动端 ===== */
+@media (max-width:860px){
+  .figs3{grid-template-columns:1fr}
+  .fig.band{aspect-ratio:16/9}
+  .gearwrap{grid-template-columns:1fr}
+}
+@media (max-width:680px){
+  .hero{min-height:76vh}
+  .road::before{left:9px}
+  .marker{left:2px}
+  .day{padding-left:30px}
+  .day-no{position:static;width:auto;text-align:left;margin-bottom:8px;
+    display:flex;align-items:baseline;gap:9px}
+  .day-no b{font-size:16px}
+  .figs2{grid-template-columns:1fr}
+  .chk{grid-template-columns:1fr}
+  .chk-w{border-right:none;border-bottom:1px solid var(--line)}
+  .dc-head,.dc-body{padding-left:16px;padding-right:16px}
+  .stat{min-width:calc(50% - 6px);flex:1 1 calc(50% - 6px)}
+  .cl-row{grid-template-columns:1fr 74px;gap:8px 10px}
+  .cl-k{grid-column:1 / -1;margin-bottom:-4px}
+  .cl-scale{margin-left:0}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .rise{opacity:1;transform:none;transition:none}
+  .marker{transition:none}
+  .climate .cl-track span{transform:scaleX(1);transition:none}
+}
+
+
+/* ================= 融合：视图路由与地图视图 ================= */
+
+/* 视图容器 */
+.view{display:none}
+.view.active{display:block}
+
+/* 悬浮视图切换器（签名元素：像路牌一样挂在右上） */
+.viewswitch{
+  position:fixed;top:14px;right:18px;z-index:120;
+  display:flex;border:1px solid var(--line);background:rgba(14,26,22,.94);
+  backdrop-filter:blur(10px);
+}
+.viewswitch button{
+  display:flex;align-items:center;gap:7px;
+  background:none;border:none;color:var(--paper-dim);cursor:pointer;
+  font-family:var(--sans);font-size:12.5px;padding:9px 15px;transition:.18s;white-space:nowrap;
+}
+.viewswitch button+button{border-left:1px solid var(--line)}
+.viewswitch button:hover{color:var(--larch-soft)}
+.viewswitch button[aria-selected="true"]{background:var(--larch);color:#241a05;font-weight:700}
+.viewswitch svg{flex:0 0 auto}
+
+/* 地图视图占满视口，内部自行滚动 */
+#view-map.active{height:100vh;height:100dvh;overflow:hidden}
+
+/* 路书里指向地图的入口卡 */
+.tomap{
+  display:flex;align-items:center;justify-content:space-between;gap:18px;
+  border:1px solid var(--line);background:var(--ink-2);padding:20px 22px;
+  margin:56px 0 0;cursor:pointer;transition:.2s;width:100%;text-align:left;
+  font-family:var(--sans);color:inherit;
+}
+.tomap:hover{border-color:var(--larch);background:var(--ink-3)}
+.tomap .tm-l{min-width:0}
+.tomap h3{font-family:var(--serif);font-size:19px;margin:0 0 5px;font-weight:700;color:var(--paper)}
+.tomap p{margin:0;font-size:13.5px;color:var(--paper-dim);text-wrap:pretty}
+.tomap .tm-go{
+  flex:0 0 auto;font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--larch);
+  display:flex;align-items:center;gap:8px;
+}
+
+/* 地图详情面板 → 回到路书当天 */
+#view-map .backplan{
+  display:inline-flex;align-items:center;gap:7px;width:100%;justify-content:center;
+  border:1px solid var(--line);background:var(--ink-2);color:var(--larch);
+  font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+  padding:11px 12px;margin-top:4px;cursor:pointer;transition:.18s;
+}
+#view-map .backplan:hover{border-color:var(--larch);background:var(--ink-3)}
+
+/* 每天卡片上的地图定位按钮 */
+.onmap{
+  display:inline-flex;align-items:center;gap:5px;
+  border:1px solid var(--line);background:none;color:var(--paper-dim);
+  font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+  padding:3px 8px;margin-top:7px;cursor:pointer;transition:.18s;
+}
+.onmap:hover{border-color:var(--larch);color:var(--larch)}
+.onmap::before{
+  content:"";width:5px;height:5px;border-radius:50%;background:var(--larch);opacity:.8;
+}
+
+@media (max-width:900px){
+  .viewswitch{top:auto;bottom:14px;right:12px;left:12px;justify-content:center}
+  .viewswitch button{flex:1;justify-content:center;padding:11px 10px}
+  #view-map.active{height:auto;overflow:visible}
+  #view-map .topbar{top:0}
+  .tomap{flex-direction:column;align-items:flex-start;gap:12px}
+}
+@media (max-width:900px){
+  /* 移动端底部切换器会盖住内容，给两个视图留出安全距离 */
+  #view-plan footer{padding-bottom:96px}
+  #view-map .panel{padding-bottom:80px}
+}
+
+
+/* ===== 布局 ===== */
+#view-map .app{display:grid;grid-template-columns:1fr 396px;height:100vh;height:100dvh}
+
+#view-map .stage{position:relative;overflow:hidden;background:
+  radial-gradient(120% 90% at 30% 10%,#16261f 0%,var(--ink) 62%)}
+
+#view-map .panel{
+  border-left:1px solid var(--line);background:var(--ink-2);
+  overflow-y:auto;display:flex;flex-direction:column;
+}
+/* ===== 顶栏 ===== */
+#view-map .topbar{
+  position:absolute;top:0;left:0;right:0;z-index:30;
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:14px 18px;background:linear-gradient(180deg,rgba(14,26,22,.94),rgba(14,26,22,0));
+  pointer-events:none;
+}
+
+#view-map .topbar > *{pointer-events:auto}
+
+#view-map .ttl{font-family:var(--serif);font-size:16px;font-weight:700;white-space:nowrap}
+
+#view-map .ttl span{font-family:var(--mono);font-size:11px;color:var(--larch);font-weight:400;margin-left:7px}
+
+#view-map .seg{display:flex;border:1px solid var(--line);background:rgba(21,36,32,.9)}
+
+#view-map .seg button{
+  background:none;border:none;color:var(--paper-dim);cursor:pointer;
+  font-family:var(--sans);font-size:12px;padding:6px 12px;white-space:nowrap;
+}
+
+#view-map .seg button+button{border-left:1px solid var(--line)}
+
+#view-map .seg button[aria-pressed="true"]{background:var(--larch);color:#241a05;font-weight:700}
+/* ===== 天数筛选 ===== */
+#view-map .dayfilter{
+  position:absolute;left:18px;bottom:18px;z-index:30;
+  display:flex;gap:5px;flex-wrap:wrap;max-width:calc(100% - 36px);
+}
+
+#view-map .dayfilter button{
+  border:1px solid var(--line);background:rgba(21,36,32,.92);color:var(--paper-dim);
+  font-family:var(--mono);font-size:11px;padding:6px 10px;cursor:pointer;transition:.18s;
+}
+
+#view-map .dayfilter button:hover{border-color:var(--larch);color:var(--larch-soft)}
+
+#view-map .dayfilter button[aria-pressed="true"]{background:var(--larch);border-color:var(--larch);color:#241a05;font-weight:700}
+/* ===== 缩放控件 ===== */
+#view-map .zoomctl{position:absolute;right:18px;bottom:18px;z-index:30;display:flex;flex-direction:column;gap:1px}
+
+#view-map .zoomctl button{
+  width:34px;height:34px;border:1px solid var(--line);background:rgba(21,36,32,.92);
+  color:var(--paper);font-family:var(--mono);font-size:15px;cursor:pointer;line-height:1;
+}
+
+#view-map .zoomctl button:hover{border-color:var(--larch);color:var(--larch)}
+/* ===== 地图 ===== */
+#view-map svg.map{width:100%;height:100%;display:block;cursor:grab;touch-action:none}
+
+#view-map svg.map.grabbing{cursor:grabbing}
+
+#view-map .rd{fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+#view-map .rd.drive{stroke:var(--larch);stroke-width:2.6}
+
+#view-map .rd.shuttle{stroke:var(--paper-dim);stroke-width:2;stroke-dasharray:7 6}
+
+#view-map .rd.hl{stroke-width:4.2;filter:none}
+
+#view-map .rd.dim{opacity:.16}
+
+#view-map .rdcase{fill:none;stroke:var(--ink);stroke-width:6.5;stroke-linecap:round}
+
+#view-map .ridge{fill:none;stroke:var(--line-2);stroke-width:1;opacity:.5}
+
+#view-map .river{fill:none;stroke:#3d6b7a;stroke-width:1.6;opacity:.62}
+
+#view-map .borderline{fill:none;stroke:var(--border-red);stroke-width:1.5;stroke-dasharray:2 5;opacity:.75}
+
+#view-map .zonefill{fill:rgba(194,69,46,.05);stroke:none}
+
+#view-map .node{cursor:pointer}
+
+#view-map .node circle.hit{fill:transparent}
+
+#view-map .node circle.dot{stroke:var(--ink);stroke-width:2;transition:r .18s}
+
+#view-map .node.stay circle.dot{fill:var(--larch);r:7}
+
+#view-map .node.pass circle.dot{fill:var(--ink-3);stroke:var(--larch);r:5.5}
+
+#view-map .node.spot circle.dot{fill:var(--birch);r:4.5}
+
+#view-map .node.gate circle.dot{fill:var(--border-red);r:6}
+
+#view-map .node:hover circle.dot, #view-map .node.on circle.dot{r:10}
+
+#view-map .node.on circle.ring{
+  fill:none;stroke:var(--larch);stroke-width:1.6;opacity:.85;
+}
+
+#view-map .node text.lb{
+  font-family:var(--sans);font-size:13px;font-weight:500;fill:var(--paper);
+  paint-order:stroke;stroke:var(--ink);stroke-width:3.4;stroke-linejoin:round;
+}
+
+#view-map .node text.sub{
+  font-family:var(--mono);font-size:9.5px;fill:var(--paper-dim);
+  paint-order:stroke;stroke:var(--ink);stroke-width:3;
+}
+
+#view-map .node.dim{opacity:.2}
+
+#view-map .roadlabel{
+  font-family:var(--mono);font-size:10px;fill:var(--larch-soft);opacity:.9;
+  paint-order:stroke;stroke:var(--ink);stroke-width:3.2;
+}
+
+#view-map .zonelabel{
+  font-family:var(--mono);font-size:9.5px;fill:var(--red-soft);opacity:.72;
+  paint-order:stroke;stroke:var(--ink);stroke-width:3;
+}
+/* ===== 图例 ===== */
+#view-map .legend{
+  position:absolute;top:64px;right:18px;z-index:25;
+  border:1px solid var(--line);background:rgba(21,36,32,.92);padding:11px 13px;
+  font-size:11.5px;color:var(--paper-dim);
+}
+
+#view-map .legend div{display:flex;align-items:center;gap:8px;margin-bottom:6px;white-space:nowrap}
+
+#view-map .legend div:last-child{margin-bottom:0}
+
+#view-map .lg-line{width:20px;height:0;border-top:2.6px solid var(--larch)}
+
+#view-map .lg-line.dash{border-top:2px dashed var(--paper-dim)}
+
+#view-map .lg-dot{width:10px;height:10px;border-radius:50%;background:var(--larch);border:1.5px solid var(--ink)}
+
+#view-map .lg-dot.pass{background:var(--ink-3);border-color:var(--larch)}
+
+#view-map .lg-dot.spot{background:var(--birch);width:8px;height:8px}
+
+#view-map .lg-dot.gate{background:var(--border-red)}
+/* ===== 详情面板 ===== */
+#view-map .p-hd{padding:20px 20px 0}
+
+#view-map .p-eyebrow{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;color:var(--larch);
+  display:flex;align-items:center;gap:8px;margin-bottom:9px;
+}
+
+#view-map .p-eyebrow .badge{
+  border:1px solid var(--line);padding:2px 7px;color:var(--paper-dim);letter-spacing:.06em;
+}
+
+#view-map .p-ttl{font-family:var(--serif);font-size:25px;font-weight:700;margin:0 0 3px;line-height:1.25}
+
+#view-map .p-alt{font-family:var(--mono);font-size:11px;color:var(--paper-dim);letter-spacing:.04em}
+
+#view-map .p-fig{margin:16px 0 0;aspect-ratio:16/10;background:var(--ink-3);position:relative;overflow:hidden}
+
+#view-map .p-fig figcaption{
+  position:absolute;left:0;right:0;bottom:0;padding:20px 12px 8px;
+  background:linear-gradient(transparent,rgba(14,26,22,.92));
+  font-family:var(--mono);font-size:10px;color:var(--birch);
+}
+
+#view-map .p-body{padding:18px 20px 26px;flex:1}
+
+#view-map .p-body p{margin:0 0 13px;font-size:14px;color:var(--birch);text-wrap:pretty}
+
+#view-map .p-body p:last-child{margin-bottom:0}
+
+#view-map .p-body strong{color:var(--paper);font-weight:500}
+
+#view-map .kv{border:1px solid var(--line);margin:0 0 16px}
+
+#view-map .kv div{display:grid;grid-template-columns:74px 1fr;border-bottom:1px solid var(--line)}
+
+#view-map .kv div:last-child{border-bottom:none}
+
+#view-map .kv dt{
+  padding:9px 11px;font-family:var(--mono);font-size:10.5px;color:var(--paper-dim);
+  background:var(--ink-3);margin:0;letter-spacing:.04em;
+}
+
+#view-map .kv dd{padding:9px 12px;margin:0;font-size:13px;color:var(--birch)}
+
+#view-map .kv dd b{color:var(--larch-soft);font-family:var(--mono)}
+
+#view-map .p-gate{border:1px solid var(--border-red);background:rgba(194,69,46,.09);padding:14px 15px;margin:0 0 16px}
+
+#view-map .p-gate .gt{
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:#ea6a50;
+  margin-bottom:7px;display:flex;gap:7px;align-items:center;
+}
+
+#view-map .p-gate p{margin:0;font-size:13px;color:var(--birch)}
+
+#view-map .p-gate p+p{margin-top:7px}
+
+#view-map .p-gate b{color:var(--red-soft);font-weight:500}
+
+#view-map .p-list{list-style:none;margin:0 0 16px;padding:0}
+
+#view-map .p-list li{
+  position:relative;padding-left:15px;margin-bottom:9px;font-size:13.5px;color:var(--birch);
+}
+
+#view-map .p-list li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;background:var(--larch);opacity:.8}
+
+#view-map .p-list li:last-child{margin-bottom:0}
+
+#view-map .p-list b{color:var(--paper);font-weight:500}
+
+#view-map .hint{
+  font-size:12.5px;color:var(--paper-dim);border-left:2px solid var(--line-2);
+  padding-left:11px;margin:0;
+}
+
+#view-map .p-nav{display:flex;gap:1px;background:var(--line);border-top:1px solid var(--line);position:sticky;bottom:0}
+
+#view-map .p-nav button{
+  flex:1;background:var(--ink-2);border:none;color:var(--paper-dim);cursor:pointer;
+  font-family:var(--mono);font-size:11px;padding:13px 8px;transition:.18s;
+}
+
+#view-map .p-nav button:hover:not(:disabled){background:var(--ink-3);color:var(--larch)}
+
+#view-map .p-nav button:disabled{opacity:.32;cursor:default}
+
+#view-map .empty{padding:26px 20px;color:var(--paper-dim);font-size:13.5px}
+
+#view-map .empty h4{font-family:var(--serif);font-size:17px;color:var(--paper);margin:0 0 10px;font-weight:700}
+
+#view-map .empty ol{margin:12px 0 0;padding-left:19px;font-size:13px}
+
+#view-map .empty li{margin-bottom:7px}
+/* ===== 移动端 ===== */
+#view-map .sheet-grip{display:none}
+@media (max-width:900px){
+
+#view-map .app{grid-template-columns:1fr;height:auto}
+
+#view-map .stage{height:62vh;height:62dvh;min-height:380px}
+
+#view-map .panel{
+    border-left:none;border-top:1px solid var(--line);
+    max-height:none;overflow:visible;
+  }
+
+#view-map .legend{top:auto;bottom:64px;right:12px;transform:scale(.92);transform-origin:bottom right}
+
+#view-map .dayfilter{left:12px;bottom:12px;gap:4px}
+
+#view-map .dayfilter button{padding:5px 8px;font-size:10.5px}
+
+#view-map .zoomctl{right:12px;bottom:12px}
+
+#view-map .topbar{padding:12px}
+
+#view-map .ttl{font-size:14px}
+
+#view-map .p-nav{position:static}
+
+#view-map .sheet-grip{
+    display:block;width:40px;height:3px;background:var(--line-2);
+    margin:9px auto 0;border-radius:2px;
+  }
+}
+@media (prefers-reduced-motion:reduce){
+
+#view-map *{transition:none!important}
+}
+
+</style>
+</head>
+<body>
+
+<!-- ===== 全局视图切换 ===== -->
+<div class="viewswitch" id="viewswitch" role="tablist" aria-label="视图切换">
+  <button data-view="plan" role="tab" aria-selected="true">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+    行程路书
+  </button>
+  <button data-view="map" role="tab" aria-selected="false">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3 4 5v16l5-2 6 2 5-2V3l-5 2-6-2Z"/><path d="M9 3v16M15 5v16"/></svg>
+    路线地图
+  </button>
+</div>
+
+<!-- ============ 视图：行程路书 ============ -->
+<div class="view" id="view-plan" data-view="plan">
+<!-- ===== 顶部导航 ===== -->
+<div class="topbar">
+  <div class="progress"><span id="pbar"></span></div>
+  <div class="navwrap">
+    <div class="brandmark">阿勒泰 · <b>7天7宿</b></div>
+    <nav class="daynav" id="daynav">
+      <button data-go="d0">09/30 乌市</button>
+      <button data-go="d1">10/01 阿勒泰</button>
+      <button data-go="d2">10/02 禾木</button>
+      <button data-go="d3">10/03 喀纳斯</button>
+      <button data-go="d4">10/04 白哈巴</button>
+      <button data-go="d5">10/05 布尔津</button>
+      <button data-go="d6">10/06 乌市</button>
+      <button data-go="quickcard">速查卡</button>
+      <button data-go="gear">装备</button>
+    </nav>
+  </div>
+</div>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="hero-img"><img src="https://aka.doubaocdn.com/s/NzH4tDnIUb" alt="白哈巴村木屋与初雪覆盖的阿尔泰山"></div>
+  <div class="hero-in">
+    <div class="kicker">2026 / 09 / 30 — 10 / 06 · 边境管理区</div>
+    <h1>禾木 · 喀纳斯<em>白哈巴</em></h1>
+    <p class="hero-sub">一条被三个门票站切开的路。车能开到哪里、哪天几点前必须点下预约，决定了这七天的顺序——而这个顺序只有一种排法成立。</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="n" data-count="7">0</div><div class="l">住宿夜数</div></div>
+      <div class="stat"><div class="n" data-count="1660"><small>km</small></div><div class="l">自驾总里程</div></div>
+      <div class="stat"><div class="n" data-count="3">0</div><div class="l">景观公路</div></div>
+      <div class="stat"><div class="n" style="color:#f5a48f" data-count="1">0</div><div class="l">不可错过的截止</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== 方案切换 ===== -->
+<div class="wrap">
+  <div class="planbar rise">
+    <h3>先选一条主线</h3>
+    <p>白哈巴是三个村里唯一放自驾名额的，每天 200 台，须提前一天 18:00 前在小程序预约。抢到与没抢到，10/04–10/05 两天的走法完全不同——切换后下方行程会同步改写。</p>
+    <div class="switch" id="switch">
+      <button data-plan="a" aria-pressed="true">方案 A · 抢到自驾名额</button>
+      <button data-plan="b" aria-pressed="false">方案 B · 改坐区间车</button>
+    </div>
+    <div class="plannote" id="plannote">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4m0 4h.01M12 3l9 16H3z"/></svg>
+      <span>当前：走铁贾公路进白哈巴，喀纳斯买一进票 230 元。</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 行程主轴 ===== -->
+<main class="wrap">
+  <div class="road" id="road">
+    <div class="marker" id="marker"></div>
+
+    <!-- ============ D0 ============ -->
+    <section class="day rise" id="d0">
+      <div class="day-no"><b>D0</b><span>09/30 三</span></div>
+        <button class="onmap" data-goto-map="urumqi">地图定位</button>
+      <article class="day-card transit">
+        <div class="dc-head">
+          <h3 class="route">抵达乌鲁木齐</h3>
+          <div class="stay">住 <b>乌鲁木齐亚朵</b></div>
+        </div>
+        <div class="dc-body">
+          <p>落地即取车，当晚把油加满、检查胎压备胎。这一夜唯一的任务是把后面六天的票和证核对一遍：边防证目的地是否写成了<strong>哈巴河县白哈巴村</strong>，三个景区的票是否都已实名购妥。</p>
+          <div class="tip"><span class="lab">夜宵</span><span>国际大巴扎一带，明早出城早，别喝太晚。</span></div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============ D1 ============ -->
+    <section class="day rise" id="d1">
+      <div class="day-no"><b>D1</b><span>10/01 四</span></div>
+        <button class="onmap" data-goto-map="altay">地图定位</button>
+      <article class="day-card transit">
+        <figure class="fig band">
+          <img src="https://aka.doubaocdn.com/s/wewIMPxALY" alt="S21 阿乌高速穿越古尔班通古特沙漠的笔直路段">
+          <figcaption>S21 阿乌高速 · 古尔班通古特沙漠段，补给点稀少</figcaption>
+        </figure>
+        <div class="dc-head" style="padding-top:18px">
+          <h3 class="route">乌鲁木齐 <span>S21</span> 阿勒泰</h3>
+          <div class="stay">住 <b>阿勒泰万驰广场迎宾路亚朵</b></div>
+        </div>
+        <div class="meters">
+          <div class="meter"><div class="v">约 530<span style="font-size:11px"> km</span></div><div class="k">里程</div></div>
+          <div class="meter"><div class="v">5–6 h</div><div class="k">纯行车</div></div>
+          <div class="meter"><div class="v">08:00</div><div class="k">建议出城</div></div>
+        </div>
+        <div class="dc-body">
+          <p>国庆首日出城高峰，八点前上路。S21 穿沙漠、路况好限速高，但<strong>服务区间隔长、补给点稀少</strong>，见到克拉美丽沙漠公园服务区就把油和水补上。</p>
+          <div class="tip"><span class="lab">到店后</span><span>加满油——明天整条阿禾公路没有加油站也没有充电桩；再查一次次日通行公告。</span></div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============ D2 ============ -->
+    <section class="day rise" id="d2">
+      <div class="day-no"><b>D2</b><span>10/02 五</span></div>
+        <button class="onmap" data-goto-map="hemu">地图定位</button>
+      <article class="day-card">
+        <div class="figs2">
+          <figure class="fig tall">
+            <img src="https://aka.doubaocdn.com/s/E4WCHs5vJa" alt="阿禾公路两侧金黄落叶松">
+            <figcaption>阿禾公路 G681 · 落叶松金秋段</figcaption>
+          </figure>
+          <figure class="fig tall">
+            <img src="https://aka.doubaocdn.com/s/Zumwswi8SU" alt="阿禾公路盘山弯道与秋色山谷">
+            <figcaption>盘山双向两车道，最高海拔 2750 m</figcaption>
+          </figure>
+        </div>
+        <div class="dc-head" style="padding-top:18px">
+          <h3 class="route">阿勒泰 <span>阿禾公路</span> 禾木</h3>
+          <div class="stay">住 <b>禾木桃源山庄</b></div>
+        </div>
+        <div class="meters">
+          <div class="meter"><div class="v">209.45<span style="font-size:11px"> km</span></div><div class="k">全长</div></div>
+          <div class="meter"><div class="v">3–4 h</div><div class="k">纯行车</div></div>
+          <div class="meter"><div class="v">5–6 h</div><div class="k">含停拍</div></div>
+          <div class="meter"><div class="v">08:30</div><div class="k">建议出发</div></div>
+        </div>
+        <div class="dc-body">
+          <p>一路串起小东沟、乌希里克湿地、野卡峡、通巴原始森林、伊列克石林，全线免费。这条路本身就是景点，别把它当赶路段压时间。</p>
+          <div class="gate">
+            <div class="gate-t">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              通行时间以出发前一晚公告为准
+            </div>
+            <p>现行为 9 米及以下客车全时段通行，但年内曾执行过<b>7 座以下 9:30–15:00 放行、超时劝返</b>；10/15 后切冬季模式。务必前一晚确认。</p>
+          </div>
+          <div class="tip"><span class="lab">进村</span><span>车停禾木游客服务中心（约 20 元/天），<strong>私家车不能进村</strong>，换区间车。秋季末班约 19:30，18 点前必须到门票站。</span></div>
+          <div class="tip"><span class="lab">傍晚</span><span>上哈登观景台看日落炊烟，为明早的晨雾先踩好机位。</span></div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============ D3 ============ -->
+    <section class="day rise" id="d3">
+      <div class="day-no"><b>D3</b><span>10/03 六</span></div>
+        <button class="onmap" data-goto-map="kanas">地图定位</button>
+      <article class="day-card">
+        <div class="figs2">
+          <figure class="fig tall">
+            <img src="https://aka.doubaocdn.com/s/UAegiTEZiK" alt="禾木观景台俯瞰晨雾中的村落">
+            <figcaption>06:30 哈登观景台 · 晨雾</figcaption>
+          </figure>
+          <figure class="fig tall">
+            <img src="https://aka.doubaocdn.com/s/aRTSbmnhFq" alt="观鱼台俯瞰喀纳斯湖">
+            <figcaption>观鱼台 · 唯一能俯瞰全湖的高点</figcaption>
+          </figure>
+        </div>
+        <div class="dc-head" style="padding-top:18px">
+          <h3 class="route">禾木 <span>贾登峪</span> 喀纳斯</h3>
+          <div class="stay">住 <b>喀纳斯小九月</b></div>
+        </div>
+        <div class="meters">
+          <div class="meter"><div class="v">约 2.5 h</div><div class="k">含换乘</div></div>
+          <div class="meter"><div class="v">06:30</div><div class="k">晨雾机位</div></div>
+          <div class="meter"><div class="v">17:00</div><div class="k">预约闹钟</div></div>
+        </div>
+        <div class="dc-body">
+          <p>早起蹲晨雾，回住处吃早饭再出园取车。禾木到喀纳斯要出景区重新买票转车，含换乘约 2.5 小时。下午进景区先冲观鱼台，去晚排长队，之后再去湖边。</p>
+          <div class="gate">
+            <div class="gate-t">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4m0 4h.01M12 3l9 16H3z"/></svg>
+              今天是整条行程唯一无法挽回的节点
+            </div>
+            <p><b>17:00 设闹钟</b>，在贾登峪或喀纳斯村这类有信号的位置，用小程序预约 10/04 的白哈巴自驾名额，<b>18:00–18:30 截止</b>。景区里信号极差，错过就作废。</p>
+            <p>顺手在喀纳斯边境派出所综合警务服务中心（游客服务中心旁）免费办边防证，1 分钟出证。</p>
+          </div>
+          <div class="tip"><span class="lab">分工</span><span>这一步最好指定一个人专门负责，别指望大家都记得。</span></div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============ D4 ============ -->
+    <section class="day rise" id="d4">
+      <div class="day-no"><b>D4</b><span>10/04 日</span></div>
+        <button class="onmap" data-goto-map="baihaba">地图定位</button>
+
+      <!-- 方案 A -->
+      <article class="day-card" data-plan="a">
+        <div class="figs2">
+          <figure class="fig tall">
+            <img src="https://aka.doubaocdn.com/s/LjnjD2LxWb" alt="喀纳斯月亮湾河湾">
+            <figcaption>月亮湾 → 卧龙湾 · 木栈道徒步</figcaption>
+          </figure>
+          <figure class="fig tall">
+            <img src="https://aka.doubaocdn.com/s/qEDfM8Cnd7" alt="铁贾公路穿过草原的弯道与牛群">
+            <figcaption>铁贾公路 54.1 km · 2023 年通车，全程免费</figcaption>
+          </figure>
+        </div>
+        <div class="dc-head" style="padding-top:18px">
+          <h3 class="route">喀纳斯 <span>铁贾公路</span> 白哈巴</h3>
+          <div class="stay">住 <b>白哈巴冬不拉设计师度假民宿</b></div>
+        </div>
+        <div class="meters">
+          <div class="meter"><div class="v">54.1<span style="font-size:11px"> km</span></div><div class="k">铁贾公路</div></div>
+          <div class="meter"><div class="v">2–3 h</div><div class="k">含停拍</div></div>
+          <div class="meter"><div class="v">30 元</div><div class="k">白哈巴门票</div></div>
+          <div class="meter"><div class="v">17:00</div><div class="k">建议进村</div></div>
+        </div>
+        <div class="dc-body">
+          <p>早起神仙湾看晨雾，再走月亮湾到卧龙湾的木栈道——<strong>走 2 号口环线</strong>，别指望返程大巴顺路打卡，时间会非常赶。中午前出景区取车。</p>
+          <p>贾登峪前约 8 公里左转进铁贾公路。这是全程最好的一段路，也是自驾名额换来的东西。</p>
+          <div class="gate">
+            <div class="gate-t">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4m0 4h.01M12 3l9 16H3z"/></svg>
+              无信号路段的三条硬规矩
+            </div>
+            <p><b>导航必须用高德</b>——百度导不出这条路；全程基本无信号，但只有一条路不会走错。</p>
+            <p><b>铁热克提乡加油站把油加满</b>，再往上没有加油站也没有充电桩。</p>
+            <p>只能从<b>铁热克提门票站</b>进，核验预约码 + 边防证 + 买门票，再开 30 多公里进村。车停白哈巴新村停车场，<b>村内不能开车</b>。</p>
+          </div>
+          <div class="tip"><span class="lab">时间</span><span>17 点前进村，别在边境路段夜驾。</span></div>
+        </div>
+      </article>
+
+      <!-- 方案 B -->
+      <article class="day-card" data-plan="b">
+        <figure class="fig wide">
+          <img src="https://aka.doubaocdn.com/s/3DkejVCFdj" alt="白哈巴村木屋与秋色山林">
+          <figcaption>白哈巴村 · 从喀纳斯换乘中心坐区间车抵达</figcaption>
+        </figure>
+        <div class="dc-head" style="padding-top:18px">
+          <h3 class="route">喀纳斯 <span>区间车</span> 白哈巴</h3>
+          <div class="stay">住 <b>白哈巴冬不拉设计师度假民宿</b></div>
+        </div>
+        <div class="meters">
+          <div class="meter"><div class="v">1–1.5 h</div><div class="k">区间车程</div></div>
+          <div class="meter"><div class="v">45 元</div><div class="k">区间车票</div></div>
+          <div class="meter"><div class="v">18:30</div><div class="k">末班车</div></div>
+          <div class="meter"><div class="v">270 元</div><div class="k">改二进票</div></div>
+        </div>
+        <div class="dc-body">
+          <p>没抢到名额就别硬等。<strong>车留在贾登峪停车场</strong>，上午照常走神仙湾晨雾和三湾栈道，之后从喀纳斯换乘中心坐区间车去白哈巴，运营时段 09:00–18:30。</p>
+          <p>白哈巴门票 30 元 + 区间车 45 元，边防证照样要办。村里徒步、看晨昏、逛图瓦木屋都不受影响。</p>
+          <div class="gate">
+            <div class="gate-t">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4m0 4h.01M12 3l9 16H3z"/></svg>
+              这个方案要放弃两样东西
+            </div>
+            <p><b>铁贾公路</b>整条路走不到；<b>那仁牧场、中哈边境大峡谷、孤独的树</b>这些只能开车去的点位也去不了。</p>
+            <p>另外喀纳斯票要从一进票 230 元<b>改成二进票 270 元</b>，因为 10/05 还得再进景区取车出山。</p>
+          </div>
+          <div class="tip"><span class="lab">预算</span><span>国庆是名额最紧张的窗口，建议一开始就把二进票的差价算进预算。</span></div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============ D5 ============ -->
+    <section class="day rise" id="d5">
+      <div class="day-no"><b>D5</b><span>10/05 一</span></div>
+        <button class="onmap" data-goto-map="burqin">地图定位</button>
+      <article class="day-card">
+        <!-- A：三点位 -->
+        <div class="figs3" data-plan="a">
+          <figure class="fig tall">
+            <img src="https://aka.doubaocdn.com/s/Xyznd27BiL" alt="那仁牧场草原上的牛群与牧栏">
+            <figcaption>那仁牧场</figcaption>
+          </figure>
+          <figure class="fig tall">
+            <img src="https://aka.doubaocdn.com/s/v7nqdmE14U" alt="中哈边境大峡谷金黄白桦与河谷">
+            <figcaption>中哈边境大峡谷</figcaption>
+          </figure>
+          <figure class="fig tall">
+            <img src="https://aka.doubaocdn.com/s/NFZWwx7CAw" alt="五彩滩雅丹地貌与额尔齐斯河">
+            <figcaption>五彩滩 · 日落</figcaption>
+          </figure>
+        </div>
+        <!-- B：两点位 -->
+        <div class="figs2" data-plan="b">
+          <figure class="fig tall">
+            <img src="https://aka.doubaocdn.com/s/CfA9yHs4Um" alt="喀纳斯湖全景">
+            <figcaption>返程经喀纳斯取车</figcaption>
+          </figure>
+          <figure class="fig tall">
+            <img src="https://aka.doubaocdn.com/s/NFZWwx7CAw" alt="五彩滩雅丹地貌与额尔齐斯河">
+            <figcaption>五彩滩 · 日落</figcaption>
+          </figure>
+        </div>
+
+        <div class="dc-head" style="padding-top:18px">
+          <h3 class="route" data-plan="a">白哈巴 <span>G219</span> 布尔津</h3>
+          <h3 class="route" data-plan="b">白哈巴 <span>喀纳斯取车</span> 布尔津</h3>
+          <div class="stay">住 <b>布尔津白桦林锦润酒店</b></div>
+        </div>
+        <div class="meters" data-plan="a" style="display:none">
+          <div class="meter"><div class="v">141<span style="font-size:11px"> km</span></div><div class="k">G219 里程</div></div>
+          <div class="meter"><div class="v">2.5 h</div><div class="k">纯行车</div></div>
+          <div class="meter"><div class="v">45 元</div><div class="k">五彩滩</div></div>
+          <div class="meter"><div class="v">约 20:00</div><div class="k">日落</div></div>
+        </div>
+        <div class="meters" data-plan="b" style="display:none">
+          <div class="meter"><div class="v">约 160<span style="font-size:11px"> km</span></div><div class="k">含返程取车</div></div>
+          <div class="meter"><div class="v">4–5 h</div><div class="k">含换乘</div></div>
+          <div class="meter"><div class="v">45 元</div><div class="k">五彩滩</div></div>
+          <div class="meter"><div class="v">约 20:00</div><div class="k">日落</div></div>
+        </div>
+
+        <div class="dc-body">
+          <div data-plan="a">
+            <p>这天才是自驾真正回本的时刻。早起看晨雾，然后<strong>开车去那仁牧场、中哈边境大峡谷、孤独的树</strong>（导航"白哈巴空中草原公交站"附近）——这些点位靠区间车加双腿到不了。</p>
+            <p>午后走 G219 出山，141 公里约 2.5 小时到布尔津，顺路可加哈巴河白桦林景区。</p>
+          </div>
+          <div data-plan="b">
+            <p>早上在村里看晨雾、走透白哈巴，之后坐区间车回喀纳斯换乘中心，出贾登峪取车，走 S232 去布尔津。这一天大半时间花在换乘和取车上，景点安排要留余量。</p>
+          </div>
+          <div class="tip"><span class="lab">傍晚</span><span>五彩滩旺季 45 元，日落时岩层色彩最饱和，10 月初日落约 20:00，预留 1.5–2.5 小时。晚上布尔津河堤夜市吃冷水鱼。</span></div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============ D6 ============ -->
+    <section class="day rise" id="d6">
+      <div class="day-no"><b>D6</b><span>10/06 二</span></div>
+        <button class="onmap" data-goto-map="urumqi">地图定位</button>
+      <article class="day-card transit">
+        <figure class="fig band">
+          <img src="https://aka.doubaocdn.com/s/9tiFiXPsyK" alt="S21 沙漠公路航拍双向车道">
+          <figcaption>S21 返程 · 区间测速密集，注意车速</figcaption>
+        </figure>
+        <div class="dc-head" style="padding-top:18px">
+          <h3 class="route">布尔津 <span>S21</span> 乌鲁木齐</h3>
+          <div class="stay">住 <b>乌鲁木齐亚朵</b></div>
+        </div>
+        <div class="meters">
+          <div class="meter"><div class="v">约 530<span style="font-size:11px"> km</span></div><div class="k">S21 直返</div></div>
+          <div class="meter"><div class="v">约 6 h</div><div class="k">纯行车</div></div>
+          <div class="meter"><div class="v">80<span style="font-size:11px"> km/h</span></div><div class="k">测速路段</div></div>
+        </div>
+        <div class="dc-body">
+          <p>直接走 S21 回乌鲁木齐，约 6 小时。<strong>克拉玛依油田路段和 G217 多处区间测速 80 km/h</strong>，别踩线。</p>
+          <div class="tip"><span class="lab">可选</span><span>想加乌尔禾魔鬼城就改走 G3014：布尔津到魔鬼城 215 公里约 3 小时，旺季 60 元 + 观光车 20 元。但全天车程会拉到 8 小时以上，<strong>若当晚有航班风险偏高</strong>。</span></div>
+        </div>
+      </article>
+    </section>
+  </div>
+
+  <!-- ===== 倒计时 ===== -->
+  <div class="deadline rise" id="countdown">
+    <div class="kicker">DEADLINE · 白哈巴自驾名额</div>
+    <h3>距 10/03 18:00 预约截止</h3>
+    <div class="clock" id="clock">
+      <div><div class="cv" id="cd">--</div><div class="ck">DAYS</div></div>
+      <div><div class="cv" id="ch">--</div><div class="ck">HOURS</div></div>
+      <div><div class="cv" id="cm">--</div><div class="ck">MIN</div></div>
+      <div><div class="cv" id="cs">--</div><div class="ck">SEC</div></div>
+    </div>
+    <p id="cdnote">每天 200 台：轴距 9 米以下 190 台 + 9 座以下房车 10 台。7 座以上大车、出租车、摩托与自行车都进不去。预约成功后迟到会永久取消入园资格，别卡点。</p>
+  </div>
+
+  <!-- ===== 待办清单 ===== -->
+  <section style="margin-top:64px" class="rise">
+    <div class="sec-head">
+      <h2>现在就要办的事</h2>
+      <div class="tag">按截止时间倒推</div>
+    </div>
+    <div class="checks">
+      <div class="chk">
+        <div class="chk-w">立刻</div>
+        <div class="chk-b">办边防证，目的地必须填 <b>阿勒泰地区哈巴河县白哈巴村</b>。只写"喀纳斯"到了进不去。带 16 岁以下孩子需出生证明或户口本。</div>
+      </div>
+      <div class="chk">
+        <div class="chk-w">立刻</div>
+        <div class="chk-b">订车。国庆乌鲁木齐租车紧张；10 月初白哈巴早晚接近零度，<b>优先四驱</b>，羽绒服和防滑鞋必带。</div>
+      </div>
+      <div class="chk">
+        <div class="chk-w">提前 3–7 天</div>
+        <div class="chk-b">在官方小程序或公众号买禾木、喀纳斯、白哈巴三个景区的票，全部实名。</div>
+      </div>
+      <div class="chk">
+        <div class="chk-w hot">10/03 18:00</div>
+        <div class="chk-b">预约 10/04 白哈巴自驾名额。<b>这是唯一不可挽回的节点</b>——错过后车还停在贾登峪，会连带影响 10/05 去布尔津的路线。</div>
+      </div>
+      <div class="chk">
+        <div class="chk-w">每晚</div>
+        <div class="chk-b">查次日阿禾公路 / 铁贾公路通行公告，把油加满。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 票务 ===== -->
+  <section style="margin-top:64px" class="rise">
+    <div class="sec-head">
+      <h2>票怎么买</h2>
+      <div class="tag">分开买，不要买三日全域通票</div>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>景区</th><th>票种</th><th>单价</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>禾木</b></td><td>门票 + 区间车</td><td class="num">50 + 约 25–52</td><td>私家车停门票站，停车约 20 元/天</td></tr>
+          <tr><td><b>喀纳斯</b></td><td>一进票</td><td class="num">230</td><td id="row-kanas">10/03 进、10/04 出，正好一次进出</td></tr>
+          <tr><td><b>白哈巴</b></td><td>门票</td><td class="num">30</td><td id="row-baihaba">自驾免 45 元区间车费</td></tr>
+          <tr><td>观鱼台</td><td>专线车</td><td class="num">约 20</td><td>官方另有"无需额外支付"口径，现场以公示为准</td></tr>
+          <tr><td>五彩滩</td><td>门票</td><td class="num">45</td><td>旺季价，日落时段最佳</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td colspan="2"><b>景区段合计</b></td><td class="num" id="tickettotal">约 360 元/人</td><td>三日全域通票 375 元会被"3 天"卡住——行程跨 10/02–10/05 共 4 天</td></tr>
+        </tfoot>
+      </table>
+    </div>
+  </section>
+
+
+  <button class="tomap" data-goto-map="1">
+    <span class="tm-l">
+      <h3>打开路线地图</h3>
+      <p>九个站点按真实经纬度投影，金线是能自己开的路段、虚线是必须换乘区间车的部分——点任意站点看当地详情。</p>
+    </span>
+    <span class="tm-go">
+      查看地图
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </span>
+  </button>
+
+  <!-- ===== 速查卡 ===== -->
+  <section style="margin-top:64px" class="rise" id="quickcard">
+    <div class="sec-head">
+      <h2>路上速查卡</h2>
+      <div class="tag">加油 · 末班车 · 无信号段</div>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>日期</th><th>加油 / 补电</th><th>末班车与时限</th><th>信号</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>10/01</b><br><span style="font-size:11.5px;color:var(--paper-dim)">乌市→阿勒泰</span></td>
+            <td>出城前满油；克拉美丽沙漠公园服务区补给</td>
+            <td class="num">—</td>
+            <td>沙漠段偶有弱区</td>
+          </tr>
+          <tr>
+            <td><b>10/02</b><br><span style="font-size:11.5px;color:var(--paper-dim)">阿勒泰→禾木</span></td>
+            <td class="hotcell">阿勒泰市区满油<br><span style="font-size:11.5px">阿禾公路全程无加油站、无充电桩</span></td>
+            <td class="num">禾木区间车约 19:30<br><span style="font-size:11.5px;color:var(--paper-dim)">18:00 前到门票站</span></td>
+            <td>山区多段无信号</td>
+          </tr>
+          <tr>
+            <td><b>10/03</b><br><span style="font-size:11.5px;color:var(--paper-dim)">禾木→喀纳斯</span></td>
+            <td>贾登峪一带补油</td>
+            <td class="num">18:00–18:30<br><span style="font-size:11.5px;color:#f5a48f">自驾名额预约截止</span></td>
+            <td class="hotcell">景区内极差<br><span style="font-size:11.5px">到贾登峪/喀纳斯村再操作</span></td>
+          </tr>
+          <tr>
+            <td><b>10/04</b><br><span style="font-size:11.5px;color:var(--paper-dim)">喀纳斯→白哈巴</span></td>
+            <td class="hotcell">铁热克提乡加油站必须加满<br><span style="font-size:11.5px">再往上无加油、无充电</span></td>
+            <td class="num">铁热克提→白哈巴 20:00<br>喀纳斯↔白哈巴 18:30</td>
+            <td class="hotcell">铁贾公路全程基本无信号<br><span style="font-size:11.5px">导航务必用高德</span></td>
+          </tr>
+          <tr>
+            <td><b>10/05</b><br><span style="font-size:11.5px;color:var(--paper-dim)">白哈巴→布尔津</span></td>
+            <td>出山后哈巴河或布尔津补油</td>
+            <td class="num">白哈巴→铁热克提 18:30<br><span style="font-size:11.5px;color:var(--paper-dim)">五彩滩日落约 20:00</span></td>
+            <td>边境段弱，出山恢复</td>
+          </tr>
+          <tr>
+            <td><b>10/06</b><br><span style="font-size:11.5px;color:var(--paper-dim)">布尔津→乌市</span></td>
+            <td>布尔津满油上高速</td>
+            <td class="num">—</td>
+            <td>正常</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tip" style="margin-top:14px">
+      <span class="lab">测速</span>
+      <span>克拉玛依油田路段与 G217 多处区间测速 80 km/h；阿禾、铁贾均为双向两车道盘山路，弯多临崖，雨雪后防暗冰。</span>
+    </div>
+  </section>
+
+  <!-- ===== 装备清单 ===== -->
+  <section style="margin-top:64px" class="rise" id="gear">
+    <div class="sec-head">
+      <h2>行李与装备</h2>
+      <div class="tag">按海拔和温差分层</div>
+    </div>
+
+    <div class="climate">
+      <div class="cl-row">
+        <div class="cl-k">白天 · 河谷平原</div>
+        <div class="cl-track"><span style="left:52%;width:26%"></span></div>
+        <div class="cl-v">5 – 15 ℃</div>
+      </div>
+      <div class="cl-row">
+        <div class="cl-k">夜间 · 禾木 / 喀纳斯</div>
+        <div class="cl-track"><span style="left:38%;width:16%;background:var(--larch)"></span></div>
+        <div class="cl-v">0 ℃ 上下</div>
+      </div>
+      <div class="cl-row">
+        <div class="cl-k">清晨 · 白哈巴 / 山区</div>
+        <div class="cl-track"><span style="left:20%;width:20%;background:var(--border-red)"></span></div>
+        <div class="cl-v">可低于 0 ℃</div>
+      </div>
+      <div class="cl-scale"><span>-15</span><span>-5</span><span>0</span><span>10</span><span>20 ℃</span></div>
+    </div>
+
+    <div class="gearwrap">
+      <div class="gearcol">
+        <div class="gc-h">三层穿着</div>
+        <ul class="gl">
+          <li><b>外层</b> 轻薄羽绒服 + 三合一冲锋衣，防风防水</li>
+          <li><b>中层</b> 抓绒或毛衣，白天脱下当靠垫</li>
+          <li><b>内层</b> 速干长袖 + 秋裤 / 加绒裤</li>
+          <li><b>末端</b> 保暖帽、薄手套、厚袜——晨雾机位站一小时全靠这三样</li>
+        </ul>
+      </div>
+      <div class="gearcol">
+        <div class="gc-h">鞋与随身</div>
+        <ul class="gl">
+          <li><b>防滑防水徒步鞋</b>，木栈道结霜、村道泥泞都靠它</li>
+          <li>充电宝（低温掉电快）、车充、备用线</li>
+          <li>保温杯、路餐——铁贾沿线无补给点</li>
+          <li>墨镜、唇膏、防晒——高海拔紫外线强</li>
+          <li>常用药、晕车药；山路弯多</li>
+        </ul>
+      </div>
+      <div class="gearcol">
+        <div class="gc-h">车与证件</div>
+        <ul class="gl">
+          <li><b>四驱优先</b>；若遇降雪需换 / 备雪地胎</li>
+          <li>身份证原件（全程刷证入园，随身放易取处）</li>
+          <li><b>边防证</b>，目的地写哈巴河县白哈巴村</li>
+          <li>预约二维码 / 辅助码提前截图存本地</li>
+          <li>离线地图：高德下载阿勒泰离线包</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="gate" style="margin-top:20px">
+      <div class="gate-t">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4m0 4h.01M12 3l9 16H3z"/></svg>
+        为什么要按零度以下准备：去年同期实况参照
+      </div>
+      <p>2025 年国庆，阿勒泰气象台曾发布专报：9/30–10/3 三轮降水，喀纳斯、禾木、白哈巴<b>大雨转中雪</b>，<b>阿禾公路沿线暴雪</b>，新增积雪 15–20 厘米（乌希里克、野卡峡一带 20–25 厘米），累计降温 11–14 ℃，G219 喀纳斯—白哈巴路段中雪，道路结冰。</p>
+      <p>当时喀纳斯 10/2–10/4 最低气温为 <b>-7 ℃ 至 -12 ℃</b>。今年天气未必重演，但这条线在国庆具备下雪封路的现实可能——<b>雪地胎、防滑鞋和一天的行程弹性都要预留</b>，出行前逐日盯官方预报与路况公告。</p>
+    </div>
+  </section>
+
+  <!-- ===== 兜底 ===== -->
+  <section style="margin-top:64px" class="rise">
+    <div class="sec-head">
+      <h2>路被堵住时</h2>
+      <div class="tag">两条替代线</div>
+    </div>
+    <div class="figs2" style="background:var(--line)">
+      <div style="background:var(--ink-3);padding:22px">
+        <div class="gate-t" style="color:var(--larch)">阿禾公路临时封路</div>
+        <p style="margin:0;font-size:14px;color:var(--birch)">10/02 改走 阿勒泰 → G217 → 布尔津 → S232 → 禾木门票站，约 264 公里 4.5 小时，当天照样能到禾木，只是少看一条路。</p>
+      </div>
+      <div style="background:var(--ink-3);padding:22px">
+        <div class="gate-t" style="color:var(--larch)">白哈巴名额没抢到</div>
+        <p style="margin:0;font-size:14px;color:var(--birch)">切到上方<strong>方案 B</strong>：车留贾登峪，坐区间车往返白哈巴，喀纳斯票改二进票 270 元，放弃铁贾公路与那仁牧场。</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-l">车能开到哪里，决定了这七天的顺序。<br>而这个顺序只有一种排法成立。</div>
+    <div class="foot-r">
+      09/30 乌鲁木齐 → 10/01 阿勒泰 → 10/02 禾木<br>
+      10/03 喀纳斯 → 10/04 白哈巴 → 10/05 布尔津 → 10/06 乌鲁木齐<br>
+      政策以出行前官方公告为准
+    </div>
+  </div>
+</footer>
+</div>
+
+<!-- ============ 视图：路线地图 ============ -->
+<div class="view" id="view-map" data-view="map">
+<div class="app">
+  <!-- ===== 地图 ===== -->
+  <div class="stage">
+    <div class="topbar">
+      <div class="ttl">阿勒泰行程地图<span>09/30 – 10/06</span></div>
+      <div class="seg" id="planseg">
+        <button data-plan="a" aria-pressed="true">方案 A 自驾</button>
+        <button data-plan="b" aria-pressed="false">方案 B 区间车</button>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div><span class="lg-line"></span> 自驾路段</div>
+      <div><span class="lg-line dash"></span> 区间车 / 换乘</div>
+      <div><span class="lg-dot"></span> 住宿点</div>
+      <div><span class="lg-dot pass"></span> 门票站 / 中转</div>
+      <div><span class="lg-dot spot"></span> 景点</div>
+      <div><span class="lg-dot gate"></span> 管控节点</div>
+    </div>
+
+    <svg class="map" id="map" viewBox="0 0 1000 760" preserveAspectRatio="xMidYMid meet"
+         role="application" aria-label="行程地图，可点击站点查看详情">
+      <g id="viewport">
+        <g id="layer-terrain"></g>
+        <g id="layer-zone"></g>
+        <g id="layer-roads"></g>
+        <g id="layer-nodes"></g>
+      </g>
+    </svg>
+
+    <div class="dayfilter" id="dayfilter">
+      <button data-day="all" aria-pressed="true">全程</button>
+      <button data-day="1">D1</button>
+      <button data-day="2">D2</button>
+      <button data-day="3">D3</button>
+      <button data-day="4">D4</button>
+      <button data-day="5">D5</button>
+      <button data-day="6">D6</button>
+    </div>
+
+    <div class="zoomctl">
+      <button id="zin" aria-label="放大">+</button>
+      <button id="zout" aria-label="缩小">−</button>
+      <button id="zreset" aria-label="复位" style="font-size:11px">复位</button>
+    </div>
+  </div>
+
+  <!-- ===== 详情面板 ===== -->
+  <aside class="panel" id="panel">
+    <div class="sheet-grip"></div>
+    <div id="pcontent">
+      <div class="empty">
+        <h4>点开地图上任意一个点</h4>
+        <p>金色实线是你能自己开的路段，虚线是必须换乘区间车的部分——这条行程的所有安排都由这个区别决定。</p>
+        <ol>
+          <li><b>金色圆点</b>是七晚住宿地</li>
+          <li><b>空心圆点</b>是门票站，车只能停到这里</li>
+          <li><b>红色圆点</b>是有硬性时限或管控的节点</li>
+        </ol>
+        <p style="margin-top:14px" class="hint">顶部可切换自驾 / 区间车两套方案，底部按天筛选路段。地图可拖动、滚轮缩放。</p>
+      </div>
+    </div>
+    <div class="p-nav" id="pnav" style="display:none">
+      <button id="prev">← 上一站</button>
+      <button id="next">下一站 →</button>
+    </div>
+  </aside>
+</div>
+</div>
+
+<script>
+
+/* ===== 状态 ===== */
+var state={plan:"a"};
+
+/* ===== 方案切换 ===== */
+function applyPlan(){
+  var nodes=document.querySelectorAll("[data-plan]");
+  for(var i=0;i<nodes.length;i++){
+    var n=nodes[i];
+    if(n.parentNode&&n.parentNode.id==="switch") continue;
+    var match=n.getAttribute("data-plan")===state.plan;
+    n.classList.toggle("on",match);
+    if(n.classList.contains("meters")) n.style.display=match?"flex":"none";
+    else if(n.classList.contains("figs2")||n.classList.contains("figs3")) n.style.display=match?"grid":"none";
+    else n.style.display=match?"block":"none";
+  }
+  var btns=document.querySelectorAll("#switch button");
+  for(var j=0;j<btns.length;j++){
+    btns[j].setAttribute("aria-pressed",btns[j].getAttribute("data-plan")===state.plan?"true":"false");
+  }
+  var note=document.querySelector("#plannote span");
+  note.textContent = state.plan==="a"
+    ? "当前：走铁贾公路进白哈巴，喀纳斯买一进票 230 元。"
+    : "当前：坐区间车往返白哈巴，喀纳斯需改二进票 270 元，放弃铁贾公路与那仁牧场。";
+  document.getElementById("row-kanas").textContent = state.plan==="a"
+    ? "10/03 进、10/04 出，正好一次进出"
+    : "改二进票 270 元：10/05 还要再进景区取车";
+  document.getElementById("row-baihaba").textContent = state.plan==="a"
+    ? "自驾免 45 元区间车费"
+    : "另需区间车 45 元";
+  document.getElementById("tickettotal").textContent = state.plan==="a"
+    ? "约 360 元/人" : "约 445 元/人";
+}
+document.getElementById("switch").addEventListener("click",function(e){
+  var b=e.target.closest("button");
+  if(!b) return;
+  state.plan=b.getAttribute("data-plan");
+  applyPlan();
+});
+applyPlan();
+
+/* ===== 天数导航：按偏移量平滑滚动 ===== */
+var navBtns=document.querySelectorAll("#daynav button");
+var bar=document.querySelector(".topbar");
+function goTo(id){
+  var el=document.getElementById(id);
+  if(!el) return;
+  var offset=bar.offsetHeight+14;
+  var y=el.getBoundingClientRect().top+window.pageYOffset-offset;
+  window.scrollTo({top:y,behavior:"smooth"});
+}
+for(var k=0;k<navBtns.length;k++){
+  navBtns[k].addEventListener("click",function(){ goTo(this.getAttribute("data-go")); });
+}
+
+/* ===== 滚动：进度条 + 里程标记 + 当前天高亮 ===== */
+var days=["d0","d1","d2","d3","d4","d5","d6"];
+var pbar=document.getElementById("pbar");
+var road=document.getElementById("road");
+var marker=document.getElementById("marker");
+var ticking=false;
+function onScroll(){
+  var doc=document.documentElement;
+  var max=doc.scrollHeight-window.innerHeight;
+  var pct=max>0?(window.pageYOffset/max)*100:0;
+  pbar.style.width=Math.min(100,Math.max(0,pct))+"%";
+
+  /* 里程标记沿公路中线推进 */
+  var rTop=road.getBoundingClientRect().top+window.pageYOffset;
+  var rH=road.offsetHeight;
+  var focus=window.pageYOffset+window.innerHeight*0.42;
+  var rel=(focus-rTop)/rH;
+  rel=Math.min(1,Math.max(0,rel));
+  marker.style.top=(rel*(rH-16))+"px";
+
+  /* 当前天（仅日期按钮参与高亮） */
+  var cur=days[0];
+  for(var i=0;i<days.length;i++){
+    var el=document.getElementById(days[i]);
+    if(el&&el.getBoundingClientRect().top<=bar.offsetHeight+90) cur=days[i];
+  }
+  for(var j=0;j<navBtns.length;j++){
+    var go=navBtns[j].getAttribute("data-go");
+    if(days.indexOf(go)===-1){ navBtns[j].removeAttribute("aria-current"); continue; }
+    navBtns[j].setAttribute("aria-current",go===cur?"true":"false");
+  }
+  ticking=false;
+}
+window.addEventListener("scroll",function(){
+  if(!ticking){ ticking=true; window.requestAnimationFrame(onScroll); }
+},{passive:true});
+window.addEventListener("resize",onScroll);
+
+/* ===== 入场揭示 ===== */
+var io=new IntersectionObserver(function(entries){
+  entries.forEach(function(en){
+    if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); }
+  });
+},{threshold:.12,rootMargin:"0px 0px -8% 0px"});
+var rises=document.querySelectorAll(".rise");
+for(var r=0;r<rises.length;r++) io.observe(rises[r]);
+
+/* 气温标尺：滚入后展开条形 */
+var clIo=new IntersectionObserver(function(entries){
+  entries.forEach(function(en){
+    if(en.isIntersecting){ en.target.classList.add("in"); clIo.unobserve(en.target); }
+  });
+},{threshold:.35});
+var climate=document.querySelector(".climate");
+if(climate) clIo.observe(climate);
+
+/* ===== hero 数字 count-up ===== */
+function countUp(el){
+  var target=parseInt(el.getAttribute("data-count"),10);
+  var suffix=el.querySelector("small");
+  var dur=900,t0=null;
+  function step(ts){
+    if(!t0) t0=ts;
+    var p=Math.min(1,(ts-t0)/dur);
+    var eased=1-Math.pow(1-p,3);
+    var v=Math.round(target*eased);
+    el.textContent=v;
+    if(suffix) el.appendChild(suffix);
+    if(p<1) window.requestAnimationFrame(step);
+  }
+  window.requestAnimationFrame(step);
+}
+var counted=false;
+var heroIo=new IntersectionObserver(function(entries){
+  entries.forEach(function(en){
+    if(en.isIntersecting&&!counted){
+      counted=true;
+      var ns=document.querySelectorAll("[data-count]");
+      for(var i=0;i<ns.length;i++) countUp(ns[i]);
+    }
+  });
+},{threshold:.4});
+heroIo.observe(document.querySelector(".hero-stats"));
+
+/* ===== 倒计时：10/03 18:00 +08:00 ===== */
+var deadline=new Date("2026-10-03T18:00:00+08:00").getTime();
+function pad(n){ return n<10?"0"+n:""+n; }
+function tick(){
+  var diff=deadline-Date.now();
+  if(diff<=0){
+    document.getElementById("clock").style.display="none";
+    document.querySelector("#countdown h3").textContent="10/03 18:00 预约窗口已过";
+    document.getElementById("cdnote").textContent="若当时未约到自驾名额，请切换到上方方案 B：车留贾登峪，坐区间车往返白哈巴，喀纳斯票改二进票 270 元。";
+    return;
+  }
+  var s=Math.floor(diff/1000);
+  document.getElementById("cd").textContent=Math.floor(s/86400);
+  document.getElementById("ch").textContent=pad(Math.floor(s%86400/3600));
+  document.getElementById("cm").textContent=pad(Math.floor(s%3600/60));
+  document.getElementById("cs").textContent=pad(s%60);
+}
+tick();
+setInterval(tick,1000);
+
+onScroll();
+
+
+/* ============ 地图视图（源自独立地图页，作用域隔离） ============ */
+var MapView=(function(){
+  var inited=false;
+  function init(){
+    if(inited) return; inited=true;
+
+    /* ============================================================
+       数据层：真实经纬度（高德 / POI 核对），运行时做墨卡托投影
+       ============================================================ */
+    var SITES=[
+      {id:"urumqi",name:"乌鲁木齐",alt:"URUMQI · 起点与终点",lon:87.6168,lat:43.8256,kind:"stay",days:[0,6],
+       img:"https://aka.doubaocdn.com/s/9tiFiXPsyK",cap:"S21 沙漠高速 · 往返阿勒泰的通道",
+       stay:"乌鲁木齐亚朵（09/30 · 10/06）",
+       kv:[["身份","行程起终点"],["到阿勒泰","约 530 km"],["车程","5–6 h"]],
+       text:["09/30 落地取车，当晚加满油、检查胎压备胎。这一夜把票和证核一遍：<strong>边防证目的地是否写成哈巴河县白哈巴村</strong>，三个景区票是否已实名购妥。",
+             "10/06 返程走 S21 约 6 小时。想加乌尔禾魔鬼城要改走 G3014，全天车程拉到 8 小时以上，当晚有航班的话风险偏高。"],
+       list:["国庆首日出城早走，八点前上路","克拉玛依油田路段与 G217 多处区间测速 80 km/h"]},
+    
+      {id:"altay",name:"阿勒泰市",alt:"ALTAY · 阿禾公路起点",lon:88.1413,lat:47.8449,kind:"stay",days:[1,2],
+       img:"https://aka.doubaocdn.com/s/GXK1n6TCeY",cap:"阿禾公路 · 秋季山谷段",
+       stay:"阿勒泰万驰广场迎宾路亚朵（10/01）",
+       kv:[["住宿","10/01 一晚"],["次日里程","209.45 km"],["出发","建议 08:30"]],
+       text:["S21 穿沙漠段服务区间隔长，见到克拉美丽沙漠公园服务区就把油和水补上。下午到阿勒泰后可去将军山、桦林公园。",
+             "<strong>当晚两件事</strong>：把油加满——明天整条阿禾公路没有加油站也没有充电桩；再查一次次日通行公告。"],
+       gate:{t:"阿禾公路通行时段每年会变",p:["现行为 9 米及以下客车全时段通行，但年内曾执行过 <b>7 座以下 9:30–15:00 放行、超时劝返</b>；10/15 后切冬季模式。<b>务必前一晚确认</b>。"]}},
+    
+      {id:"hemu",name:"禾木村",alt:"HEMU · 图瓦村落",lon:87.4330,lat:48.5686,kind:"stay",days:[2,3],
+       img:"https://aka.doubaocdn.com/s/UAegiTEZiK",cap:"哈登观景台 · 晨雾与炊烟",
+       stay:"禾木桃源山庄（10/02）",
+       kv:[["住宿","10/02 一晚"],["门票","50 元 + 区间车"],["停车","约 20 元/天"],["末班车","约 19:30"]],
+       text:["阿禾公路一路串起小东沟、乌希里克湿地、野卡峡、通巴原始森林、伊列克石林，全线免费。这条路本身就是景点，别当赶路段压时间。",
+             "傍晚上哈登观景台看日落炊烟，顺便为次日晨雾踩好机位。10/03 清晨 6:30 是这趟行程最值得早起的一次。"],
+       gate:{t:"车进不了村",p:["私家车只能停<b>禾木游客服务中心 / 吉克普林停车场</b>，换区间车进村。秋季末班车约 19:30，<b>18:00 前必须到门票站</b>。"]}},
+    
+      {id:"jiadengyu",name:"贾登峪",alt:"JIADENGYU · 喀纳斯门票站",lon:87.1710,lat:48.4918,kind:"pass",days:[3,4],
+       img:"https://aka.doubaocdn.com/s/4ZpoJZKUMr",cap:"喀纳斯景区唯一入口，社会车辆终点",
+       kv:[["性质","门票站 / 停车场"],["换乘","到换乘中心约 30 min"],["再到湖边","合计近 1 h"]],
+       text:["喀纳斯的车只能停到这里。从贾登峪坐景交车进景区，到喀纳斯游客中心还要 50 分钟左右——从停车那一刻算起，看见湖面前还隔着将近一小时。",
+             "禾木到喀纳斯要<strong>出景区重新买票转车</strong>，含换乘全程约 2.5 小时。别把两地压在同一天赶景点。"],
+       list:["建议早 8 点前到，赶第一波进景区","身份证随身放易取处，全程刷证","方案 B 里这里是 10/04–10/05 的停车点"]},
+    
+      {id:"kanas",name:"喀纳斯村",alt:"KANAS · 湖区与三湾",lon:87.0200,lat:48.7600,kind:"stay",days:[3,4],
+       img:"https://aka.doubaocdn.com/s/aRTSbmnhFq",cap:"观鱼台 · 唯一能俯瞰全湖的高点",
+       stay:"喀纳斯小九月（10/03）",
+       kv:[["住宿","10/03 一晚"],["一进票","230 元"],["观鱼台专线","约 20 元"],["办证","边境警务服务中心"]],
+       text:["下午进景区先冲观鱼台，去晚排长队，之后再去湖边。次日清晨看神仙湾晨雾，再走月亮湾到卧龙湾的木栈道——<strong>走 2 号口环线</strong>，别指望返程大巴顺路打卡。",
+             "边防证就在<strong>喀纳斯边境派出所综合警务服务中心</strong>（游客服务中心旁）免费办，1 分钟出证。"],
+       gate:{t:"10/03 傍晚 · 全程唯一不可挽回的节点",p:["<b>17:00 设闹钟</b>，在贾登峪或喀纳斯村这类有信号的位置预约次日白哈巴自驾名额，<b>18:00–18:30 截止</b>。",
+            "景区里信号极差，错过就作废——而车还停在贾登峪，会连带影响 10/05 去布尔津的走法。这一步指定一个人专门负责。"]}},
+    
+      {id:"tiereketi",name:"铁热克提门票站",alt:"TIEREKETI · 白哈巴唯一自驾入口",lon:86.7041,lat:48.5247,kind:"gate",days:[4],
+       img:"https://aka.doubaocdn.com/s/qEDfM8Cnd7",cap:"铁贾公路 54.1 km · 2023 年通车，全程免费",
+       kv:[["性质","自驾入口 + 加油点"],["铁贾公路","54.1 km"],["含停拍","2–3 h"],["到白哈巴","30 余 km"]],
+       text:["自驾进白哈巴<strong>只能从这里进</strong>，贾登峪方向进白哈巴只能坐区间车。贾登峪前约 8 公里左转进铁贾公路，穿草原、森林、石林、溪流。",
+             "这条路是自驾名额换来的东西：车少人稀，想停就停。到铁热克提乡可以吃个饭再进山。"],
+       gate:{t:"无信号路段的三条硬规矩",p:["<b>导航必须用高德</b>——百度导不出这条路；全程基本无信号，但只有一条路不会走错。",
+            "<b>铁热克提乡加油站必须加满</b>，再往上没有加油站也没有充电桩。",
+            "核验预约码 + 边防证 + 买 30 元门票；<b>迟到会永久取消入园资格</b>，别卡点。"]}},
+    
+      {id:"baihaba",name:"白哈巴村",alt:"BAIHABA · 西北第一村",lon:86.7850,lat:48.6931,kind:"stay",days:[4,5],
+       img:"https://aka.doubaocdn.com/s/3DkejVCFdj",cap:"白哈巴村 · 木屋与初雪山脊",
+       stay:"白哈巴冬不拉设计师度假民宿（10/04）",
+       kv:[["住宿","10/04 一晚"],["门票","30 元"],["自驾名额","每日 200 台"],["车位","新村停车场"]],
+       text:["三个村里<strong>只有白哈巴放自驾名额</strong>：每天 200 台，轴距 9 米以下 190 台 + 9 座以下房车 10 台。7 座以上大车、出租车、摩托与自行车都进不去。",
+             "预约成功后不用买区间车票，只买 30 元门票。车停新村停车场，<strong>村内不能开车</strong>。建议 17 点前进村，别在边境路段夜驾。"],
+       gate:{t:"边境管理区 · 无证不得入内",p:["边防证目的地必须写<b>阿勒泰地区哈巴河县白哈巴村</b>，只写“喀纳斯”到了照样进不去。",
+            "带 16 岁以下孩子需出生证明或户口本，光带身份证没用。"]}},
+    
+      {id:"naren",name:"那仁牧场",alt:"NAREN · 只有开车能到",lon:86.9102,lat:48.7592,kind:"spot",days:[5],
+       img:"https://aka.doubaocdn.com/s/Xyznd27BiL",cap:"那仁牧场 · 秋季牧群",
+       kv:[["方案 A","开车可达"],["方案 B","到不了"],["位置","白哈巴以北"]],
+       text:["这里是自驾真正回本的地方。10/05 早起看晨雾后开车去那仁牧场、<strong>中哈边境大峡谷、孤独的树</strong>（导航“白哈巴空中草原公交站”附近）。",
+             "村里徒步看不到这些——它们靠区间车加双腿到不了。如果你走的是方案 B，这一组点位只能放弃。"],
+       list:["草原、牧群、河谷，人比村里少得多","路况一般，注意牲畜横穿","返程留足时间，出山末班 18:30"]},
+    
+      {id:"burqin",name:"布尔津县",alt:"BURQIN · 出山落脚点",lon:86.8750,lat:47.7019,kind:"stay",days:[5,6],
+       img:"https://aka.doubaocdn.com/s/NFZWwx7CAw",cap:"五彩滩 · 额尔齐斯河畔雅丹",
+       stay:"布尔津白桦林锦润酒店（10/05）",
+       kv:[["住宿","10/05 一晚"],["白哈巴→此","141 km"],["车程","约 2.5 h"],["五彩滩","45 元"]],
+       text:["午后走 G219 出山，141 公里约 2.5 小时，顺路可加哈巴河白桦林景区。傍晚去五彩滩，日落时岩层色彩最饱和，10 月初日落约 20:00，预留 1.5–2.5 小时。",
+             "晚上去布尔津河堤夜市吃冷水鱼——冷水狗鱼、五道黑都是本地做法。"],
+       list:["方案 B 这天要先坐区间车回喀纳斯、出贾登峪取车再南下，时间紧得多","次日走 S21 回乌鲁木齐约 530 km / 6 h"]}
+    ];
+    
+    /* 路段：按天与方案组织。geo 为真实控制点，弯曲用二次贝塞尔近似走向 */
+    var LEGS=[
+      {id:"l1",day:1,mode:"drive",from:"urumqi",to:"altay",label:"S21 阿乌高速",bend:-40,
+       plans:["a","b"]},
+      {id:"l2",day:2,mode:"drive",from:"altay",to:"hemu",label:"阿禾公路 G681",bend:70,
+       plans:["a","b"]},
+      {id:"l3",day:3,mode:"drive",from:"hemu",to:"jiadengyu",label:"出景区取车",bend:26,
+       plans:["a","b"]},
+      {id:"l4",day:3,mode:"shuttle",from:"jiadengyu",to:"kanas",label:"区间车 50 min",bend:-20,
+       plans:["a","b"]},
+      {id:"l5a",day:4,mode:"drive",from:"kanas",to:"jiadengyu",label:"出景区取车",bend:20,
+       plans:["a"]},
+      {id:"l6a",day:4,mode:"drive",from:"jiadengyu",to:"tiereketi",label:"铁贾公路 54.1 km",bend:52,
+       plans:["a"]},
+      {id:"l7a",day:4,mode:"drive",from:"tiereketi",to:"baihaba",label:"G219 · 30 余 km",bend:-22,
+       plans:["a"]},
+      {id:"l5b",day:4,mode:"shuttle",from:"kanas",to:"baihaba",label:"区间车 1–1.5 h",bend:34,
+       plans:["b"]},
+      {id:"l8a",day:5,mode:"drive",from:"baihaba",to:"naren",label:"那仁牧场往返",bend:-16,
+       plans:["a"]},
+      {id:"l9a",day:5,mode:"drive",from:"baihaba",to:"burqin",label:"G219 出山 141 km",bend:-56,
+       plans:["a"]},
+      {id:"l9b",day:5,mode:"shuttle",from:"baihaba",to:"kanas",label:"区间车返回",bend:34,
+       plans:["b"]},
+      {id:"l10b",day:5,mode:"drive",from:"jiadengyu",to:"burqin",label:"S232 南下",bend:-70,
+       plans:["b"]},
+      {id:"l11",day:6,mode:"drive",from:"burqin",to:"urumqi",label:"S21 返程",bend:52,
+       plans:["a","b"]}
+    ];
+    
+    /* ============================================================
+       投影：Web Mercator，按核心区自适应，乌鲁木齐单独压缩到画布内
+       ============================================================ */
+    var W=1000,H=760;
+    function mercY(lat){ return Math.log(Math.tan(Math.PI/4+lat*Math.PI/360)); }
+    
+    /* 核心区（不含乌市）决定主比例，保证阿勒泰片区细节可读 */
+    var core=SITES.filter(function(s){ return s.id!=="urumqi"; });
+    var lons=core.map(function(s){return s.lon}), lats=core.map(function(s){return s.lat});
+    var lon0=Math.min.apply(null,lons)-0.10, lon1=Math.max.apply(null,lons)+0.10;
+    var yA=mercY(Math.min.apply(null,lats)-0.06), yB=mercY(Math.max.apply(null,lats)+0.06);
+    var PAD_T=88, PAD_B=132;               /* 顶部留给标题、底部留给乌市引出 */
+    function proj(lon,lat){
+      var x=(lon-lon0)/(lon1-lon0)*W;
+      var y=(H-PAD_T-PAD_B)-((mercY(lat)-yA)/(yB-yA))*(H-PAD_T-PAD_B)+PAD_T;
+      return [x,y];
+    }
+    var POS={};
+    SITES.forEach(function(s){
+      if(s.id==="urumqi"){
+        /* 乌市实际在南方 400+ km 外，按真实方位放在画布底部并标注断裂 */
+        POS[s.id]=[762,H-46];
+      }else{
+        POS[s.id]=proj(s.lon,s.lat);
+      }
+    });
+    
+    /* ============================================================
+       绘制
+       ============================================================ */
+    var SVG_NS="http://www.w3.org/2000/svg";
+    function el(n,attrs){
+      var e=document.createElementNS(SVG_NS,n);
+      if(attrs) for(var k in attrs) e.setAttribute(k,attrs[k]);
+      return e;
+    }
+    var gTerrain=document.getElementById("layer-terrain");
+    var gZone=document.getElementById("layer-zone");
+    var gRoads=document.getElementById("layer-roads");
+    var gNodes=document.getElementById("layer-nodes");
+    
+    /* --- 地形底纹：阿尔泰山脊线示意 --- */
+    (function terrain(){
+      var ridges=[
+        "M 20 60 Q 150 20 300 78 T 620 52 T 980 96",
+        "M 10 130 Q 180 92 330 148 T 660 120 T 990 168",
+        "M 40 208 Q 210 176 360 226 T 700 200 T 986 244",
+        "M 30 292 Q 220 262 372 306 T 720 284 T 980 322"
+      ];
+      ridges.forEach(function(d){ gTerrain.appendChild(el("path",{d:d,"class":"ridge"})); });
+      /* 额尔齐斯河 + 布尔津河示意 */
+      gTerrain.appendChild(el("path",{d:"M 250 700 Q 150 660 60 672",class:"river"}));
+      gTerrain.appendChild(el("path",{d:"M 250 700 Q 300 560 262 400 T 300 250",class:"river"}));
+    })();
+    
+    /* --- 边境管理区示意带 --- */
+    (function zone(){
+      gZone.appendChild(el("path",{
+        d:"M 0 300 Q 60 220 40 120 T 20 0 L 0 0 Z",class:"zonefill"}));
+      gZone.appendChild(el("path",{
+        d:"M 6 316 Q 68 228 46 122 T 24 -6",class:"borderline"}));
+      var t=el("text",{x:16,y:352,"class":"zonelabel"});
+      t.textContent="中哈边境线 · 边境管理区";
+      gZone.appendChild(t);
+    })();
+    
+    /* --- 路段 --- */
+    function legPath(leg){
+      var a=POS[leg.from], b=POS[leg.to];
+      var mx=(a[0]+b[0])/2, my=(a[1]+b[1])/2;
+      var dx=b[0]-a[0], dy=b[1]-a[1];
+      var len=Math.sqrt(dx*dx+dy*dy)||1;
+      /* 法向偏移形成弯曲，模拟山路走向 */
+      var nx=-dy/len, ny=dx/len;
+      var k=leg.bend||0;
+      return "M "+a[0].toFixed(1)+" "+a[1].toFixed(1)+
+             " Q "+(mx+nx*k).toFixed(1)+" "+(my+ny*k).toFixed(1)+
+             " "+b[0].toFixed(1)+" "+b[1].toFixed(1);
+    }
+    LEGS.forEach(function(leg){
+      var d=legPath(leg);
+      var g=el("g",{"data-leg":leg.id,"data-day":leg.day,"data-plans":leg.plans.join(",")});
+      g.appendChild(el("path",{d:d,"class":"rdcase"}));
+      var p=el("path",{d:d,"class":"rd "+leg.mode,id:"path-"+leg.id});
+      g.appendChild(p);
+      if(leg.label){
+        var tp=el("text",{"class":"roadlabel","dy":-7});
+        var tpath=el("textPath",{href:"#path-"+leg.id,startOffset:"50%","text-anchor":"middle"});
+        tpath.textContent=leg.label;
+        tp.appendChild(tpath);
+        g.appendChild(tp);
+      }
+      gRoads.appendChild(g);
+    });
+    
+    /* --- 站点 --- */
+    var LABEL_POS={
+      urumqi:[0,26],altay:[0,-20],hemu:[14,-18],jiadengyu:[-8,26],
+      kanas:[16,-18],tiereketi:[8,28],baihaba:[-14,-20],naren:[16,-16],
+      burqin:[18,-14]
+    };
+    SITES.forEach(function(s,i){
+      var p=POS[s.id];
+      var g=el("g",{"class":"node "+s.kind,"data-id":s.id,"data-days":s.days.join(","),
+        tabindex:"0",role:"button","aria-label":s.name+" 详情"});
+      g.setAttribute("transform","translate("+p[0].toFixed(1)+","+p[1].toFixed(1)+")");
+      g.appendChild(el("circle",{"class":"ring",r:15,opacity:0}));
+      g.appendChild(el("circle",{"class":"hit",r:22}));
+      g.appendChild(el("circle",{"class":"dot"}));
+      var off=LABEL_POS[s.id]||[0,-18];
+      var lb=el("text",{"class":"lb",x:off[0],y:off[1],"text-anchor":off[0]>6?"start":(off[0]<-6?"end":"middle")});
+      lb.textContent=s.name;
+      g.appendChild(lb);
+      var sub=el("text",{"class":"sub",x:off[0],y:off[1]+(off[1]<0?-13:13),
+        "text-anchor":off[0]>6?"start":(off[0]<-6?"end":"middle")});
+      sub.textContent=s.kind==="stay"&&s.stay?"住宿":(s.kind==="gate"?"管控节点":(s.kind==="pass"?"门票站":"景点"));
+      g.appendChild(sub);
+      gNodes.appendChild(g);
+    });
+    
+    /* 乌鲁木齐距离断裂标注 */
+    (function breakMark(){
+      var p=POS.urumqi;
+      var t=el("text",{x:p[0],y:p[1]-30,"class":"zonelabel","text-anchor":"middle"});
+      t.textContent="↓ 南向约 530 km（示意压缩）";
+      gNodes.appendChild(t);
+    })();
+    
+    /* ============================================================
+       状态与渲染
+       ============================================================ */
+    var state={plan:"a",day:"all",sel:null};
+    
+    function visibleSites(){
+      return SITES.filter(function(s){
+        if(state.plan==="b"&&(s.id==="naren"||s.id==="tiereketi")) return false;
+        if(state.day==="all") return true;
+        return s.days.indexOf(parseInt(state.day,10))>-1;
+      });
+    }
+    function applyFilter(){
+      /* 路段 */
+      var legNodes=gRoads.children;
+      for(var i=0;i<legNodes.length;i++){
+        var g=legNodes[i];
+        var plans=(g.getAttribute("data-plans")||"").split(",");
+        var day=g.getAttribute("data-day");
+        var okPlan=plans.indexOf(state.plan)>-1;
+        var okDay=state.day==="all"||day===state.day;
+        g.style.display=okPlan?"":"none";
+        var stroke=g.querySelector(".rd");
+        if(stroke) stroke.classList.toggle("dim",okPlan&&!okDay);
+        var lbl=g.querySelector(".roadlabel");
+        if(lbl) lbl.style.opacity=(okPlan&&okDay)?.9:.18;
+      }
+      /* 站点：方案 B 无那仁牧场与铁热克提；非当天的点淡出但保留 */
+      var vis=visibleSites().map(function(s){return s.id});
+      var ns=gNodes.querySelectorAll(".node");
+      for(var j=0;j<ns.length;j++){
+        var id=ns[j].getAttribute("data-id");
+        var inPlan=!(state.plan==="b"&&(id==="naren"||id==="tiereketi"));
+        ns[j].style.display=inPlan?"":"none";
+        ns[j].classList.toggle("dim",inPlan&&vis.indexOf(id)===-1);
+      }
+    }
+    
+    /* --- 详情渲染 --- */
+    function render(id){
+      var s=null;
+      for(var i=0;i<SITES.length;i++) if(SITES[i].id===id) s=SITES[i];
+      if(!s) return;
+      state.sel=id;
+    
+      var h="";
+      h+='<div class="p-hd">';
+      h+='<div class="p-eyebrow">'+(s.kind==="stay"?"住宿点":s.kind==="gate"?"管控节点":s.kind==="pass"?"门票站":"景点");
+      var dayTxt=s.days.map(function(d){ return d===0?"09/30":"D"+d; }).join(" / ");
+      h+='<span class="badge">'+dayTxt+'</span>';
+      h+='</div>';
+      h+='<h3 class="p-ttl">'+s.name+'</h3>';
+      h+='<div class="p-alt">'+s.alt+'</div>';
+      if(s.img){
+        h+='<figure class="p-fig"><img src="'+s.img+'" alt="'+s.name+'">';
+        if(s.cap) h+='<figcaption>'+s.cap+'</figcaption>';
+        h+='</figure>';
+      }
+      h+='</div><div class="p-body">';
+      if(s.stay) h+='<p class="hint" style="margin-bottom:15px">'+s.stay+'</p>';
+      if(s.kv&&s.kv.length){
+        h+='<dl class="kv">';
+        s.kv.forEach(function(r){ h+='<div><dt>'+r[0]+'</dt><dd>'+r[1]+'</dd></div>'; });
+        h+='</dl>';
+      }
+      if(s.gate){
+        h+='<div class="p-gate"><div class="gt">';
+        h+='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4m0 4h.01M12 3l9 16H3z"/></svg>';
+        h+=s.gate.t+'</div>';
+        s.gate.p.forEach(function(t){ h+='<p>'+t+'</p>'; });
+        h+='</div>';
+      }
+      (s.text||[]).forEach(function(t){ h+='<p>'+t+'</p>'; });
+      if(s.list&&s.list.length){
+        h+='<ul class="p-list">';
+        s.list.forEach(function(t){ h+='<li>'+t+'</li>'; });
+        h+='</ul>';
+      }
+      var backDay=s.days.filter(function(d){return d>0;})[0];
+      if(backDay){
+        h+='<button class="backplan" data-goto-plan="d'+backDay+'">'
+         + '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">'
+         + '<path d="M19 12H5M11 18l-6-6 6-6"/></svg> 回到路书 D'+backDay+' 详细安排</button>';
+      }
+      h+='</div>';
+    
+      document.getElementById("pcontent").innerHTML=h;
+      document.getElementById("pnav").style.display="flex";
+    
+      /* 选中态 */
+      var ns=gNodes.querySelectorAll(".node");
+      for(var k=0;k<ns.length;k++){
+        var on=ns[k].getAttribute("data-id")===id;
+        ns[k].classList.toggle("on",on);
+        var ring=ns[k].querySelector(".ring");
+        if(ring) ring.setAttribute("opacity",on?"1":"0");
+      }
+      /* 把选中站点排到最上层，标签不被压住 */
+      var sel=gNodes.querySelector('.node[data-id="'+id+'"]');
+      if(sel) gNodes.appendChild(sel);
+    
+      updateNav();
+      if(window.matchMedia("(max-width:900px)").matches){
+        var y=document.getElementById("panel").getBoundingClientRect().top+window.pageYOffset-8;
+        window.scrollTo({top:y,behavior:"smooth"});
+      }else{
+        document.getElementById("panel").scrollTop=0;
+      }
+    }
+    
+    /* --- 上一站 / 下一站（按当前方案的实际顺序） --- */
+    function order(){
+      var seq=["urumqi","altay","hemu","jiadengyu","kanas","tiereketi","baihaba","naren","burqin"];
+      if(state.plan==="b") seq=seq.filter(function(x){ return x!=="tiereketi"&&x!=="naren"; });
+      return seq;
+    }
+    function updateNav(){
+      var seq=order(), i=seq.indexOf(state.sel);
+      document.getElementById("prev").disabled=(i<=0);
+      document.getElementById("next").disabled=(i<0||i>=seq.length-1);
+    }
+    document.getElementById("prev").addEventListener("click",function(){
+      var seq=order(), i=seq.indexOf(state.sel);
+      if(i>0) render(seq[i-1]);
+    });
+    document.getElementById("next").addEventListener("click",function(){
+      var seq=order(), i=seq.indexOf(state.sel);
+      if(i>-1&&i<seq.length-1) render(seq[i+1]);
+    });
+    
+    /* --- 交互绑定 --- */
+    gNodes.addEventListener("click",function(e){
+      var n=e.target.closest(".node");
+      if(n) render(n.getAttribute("data-id"));
+    });
+    gNodes.addEventListener("keydown",function(e){
+      if(e.key!=="Enter"&&e.key!==" ") return;
+      var n=e.target.closest(".node");
+      if(n){ e.preventDefault(); render(n.getAttribute("data-id")); }
+    });
+    
+    document.getElementById("planseg").addEventListener("click",function(e){
+      var b=e.target.closest("button");
+      if(!b) return;
+      state.plan=b.getAttribute("data-plan");
+      var bs=this.querySelectorAll("button");
+      for(var i=0;i<bs.length;i++)
+        bs[i].setAttribute("aria-pressed",bs[i]===b?"true":"false");
+      applyFilter();
+      /* 若当前选中点在新方案里不存在，退回白哈巴 */
+      if(state.plan==="b"&&(state.sel==="naren"||state.sel==="tiereketi")) render("baihaba");
+      else if(state.sel) updateNav();
+    });
+    
+    document.getElementById("dayfilter").addEventListener("click",function(e){
+      var b=e.target.closest("button");
+      if(!b) return;
+      state.day=b.getAttribute("data-day");
+      var bs=this.querySelectorAll("button");
+      for(var i=0;i<bs.length;i++)
+        bs[i].setAttribute("aria-pressed",bs[i]===b?"true":"false");
+      applyFilter();
+    });
+    
+    /* ============================================================
+       平移 / 缩放
+       ============================================================ */
+    var vp=document.getElementById("viewport");
+    var view={x:0,y:0,k:1};
+    function applyView(){
+      vp.setAttribute("transform","translate("+view.x+","+view.y+") scale("+view.k+")");
+    }
+    function zoomAt(cx,cy,factor){
+      var nk=Math.min(4,Math.max(.75,view.k*factor));
+      var r=nk/view.k;
+      view.x=cx-(cx-view.x)*r;
+      view.y=cy-(cy-view.y)*r;
+      view.k=nk;
+      applyView();
+    }
+    var svg=document.getElementById("map");
+    function svgPoint(evt){
+      var r=svg.getBoundingClientRect();
+      var sx=W/r.width, sy=H/r.height;
+      var s=Math.max(sx,sy);           /* preserveAspectRatio meet */
+      var ox=(r.width*s-W)/2, oy=(r.height*s-H)/2;
+      return [(evt.clientX-r.left)*s-ox,(evt.clientY-r.top)*s-oy];
+    }
+    svg.addEventListener("wheel",function(e){
+      e.preventDefault();
+      var p=svgPoint(e);
+      zoomAt(p[0],p[1],e.deltaY<0?1.16:1/1.16);
+    },{passive:false});
+    
+    var drag=null;
+    svg.addEventListener("pointerdown",function(e){
+      if(e.target.closest(".node")) return;
+      drag={px:e.clientX,py:e.clientY,ox:view.x,oy:view.y};
+      svg.classList.add("grabbing");
+      svg.setPointerCapture(e.pointerId);
+    });
+    svg.addEventListener("pointermove",function(e){
+      if(!drag) return;
+      var r=svg.getBoundingClientRect();
+      var s=Math.max(W/r.width,H/r.height);
+      view.x=drag.ox+(e.clientX-drag.px)*s;
+      view.y=drag.oy+(e.clientY-drag.py)*s;
+      applyView();
+    });
+    function endDrag(){ drag=null; svg.classList.remove("grabbing"); }
+    svg.addEventListener("pointerup",endDrag);
+    svg.addEventListener("pointercancel",endDrag);
+    svg.addEventListener("pointerleave",endDrag);
+    
+    document.getElementById("zin").addEventListener("click",function(){ zoomAt(W/2,H/2,1.28); });
+    document.getElementById("zout").addEventListener("click",function(){ zoomAt(W/2,H/2,1/1.28); });
+    document.getElementById("zreset").addEventListener("click",function(){
+      view={x:0,y:0,k:1}; applyView();
+    });
+    
+    /* ===== 初始化 ===== */
+    applyView();
+    applyFilter();
+    window.__mapSelect=function(id){ render(id); };
+    
+  }
+  return { init: init };
+})();
+
+
+/* ============ 视图路由（hash） ============ */
+(function(){
+  var VIEWS=["plan","map"];
+  var sw=document.getElementById("viewswitch");
+  function parseHash(){
+    var h=(location.hash||"").replace(/^#/,"");
+    var v=h.split("?")[0];
+    return VIEWS.indexOf(v)>-1?v:"plan";
+  }
+  function show(v,opts){
+    opts=opts||{};
+    VIEWS.forEach(function(name){
+      var el=document.getElementById("view-"+name);
+      if(el) el.classList.toggle("active",name===v);
+    });
+    var bs=sw.querySelectorAll("button");
+    for(var i=0;i<bs.length;i++)
+      bs[i].setAttribute("aria-selected",bs[i].getAttribute("data-view")===v?"true":"false");
+    document.body.style.overflow=(v==="map"&&window.innerWidth>900)?"hidden":"";
+    if(v==="map"){
+      MapView.init();
+      /* 地图初始化后按 hash 参数选中站点 */
+      var q=(location.hash.split("?")[1]||"");
+      var m=/site=([a-zA-Z]+)/.exec(q);
+      if(m&&window.__mapSelect) window.__mapSelect(m[1]);
+    }
+    if(!opts.keepScroll) window.scrollTo({top:0,behavior:"auto"});
+  }
+  sw.addEventListener("click",function(e){
+    var b=e.target.closest("button");
+    if(!b) return;
+    var v=b.getAttribute("data-view");
+    if(parseHash()===v) return;
+    location.hash=v;
+  });
+  window.addEventListener("hashchange",function(){ show(parseHash()); });
+  /* 路书 → 地图 的入口 */
+  document.addEventListener("click",function(e){
+    var t=e.target.closest("[data-goto-map]");
+    if(!t) return;
+    e.preventDefault();
+    var site=t.getAttribute("data-goto-map");
+    location.hash = site&&site!=="1" ? ("map?site="+site) : "map";
+  });
+  /* 地图 → 路书某一天 */
+  document.addEventListener("click",function(e){
+    var t=e.target.closest("[data-goto-plan]");
+    if(!t) return;
+    e.preventDefault();
+    var day=t.getAttribute("data-goto-plan");
+    show("plan");
+    location.hash="plan";
+    /* 等视图显示后再定位到当天卡片 */
+    window.requestAnimationFrame(function(){
+      var el=document.getElementById(day);
+      if(!el) return;
+      var bar=document.querySelector("#view-plan .topbar");
+      var off=(bar?bar.offsetHeight:0)+16;
+      var y=el.getBoundingClientRect().top+window.pageYOffset-off;
+      window.scrollTo({top:y,behavior:"smooth"});
+    });
+  });
+  show(parseHash(),{keepScroll:true});
+})();
+
+</script>
+</body>
+</html>
