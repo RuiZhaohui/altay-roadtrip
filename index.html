@@ -201,6 +201,36 @@ h1 em{font-style:normal;color:var(--larch);display:block}
   flex:0 0 auto;padding-top:3px;
 }
 
+/* 当日时间轴：09:00 起 / 23:00 收 */
+.tl{margin:16px 0 0;border:1px solid var(--line);background:var(--ink-2)}
+.tl-h{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--larch);
+  padding:10px 14px;border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+}
+.tl-h span:last-child{color:var(--paper-dim);letter-spacing:.1em}
+.tl-r{
+  display:grid;grid-template-columns:58px 1fr;gap:12px;
+  padding:8px 14px;border-top:1px dashed rgba(44,68,56,.65);
+}
+.tl-r:first-of-type{border-top:none}
+.tl-t{font-family:var(--mono);font-size:12px;color:var(--larch-soft);font-weight:700;padding-top:1px;white-space:nowrap}
+.tl-d{font-size:13.5px;color:var(--birch)}
+.tl-d b{color:var(--paper);font-weight:500}
+.tl-r.opt .tl-t{color:var(--paper-dim)}
+.tl-r.opt .tl-d{color:var(--paper-dim)}
+/* 必须早起的关键项 */
+.tl-r.early{background:rgba(194,69,46,.10);border-left:3px solid var(--border-red);padding-left:11px}
+.tl-r.early .tl-t{color:#ea6a50}
+.tl-r.early .tl-d b{color:#f3b3a4}
+.tl-tag{font-family:var(--mono);font-size:9.5px;border:1px solid var(--line);color:var(--paper-dim);padding:1px 6px;margin-left:8px;letter-spacing:.08em;white-space:nowrap}
+.tl-tag.hot{border-color:var(--border-red);color:#ea6a50}
+/* 非早起的关键硬节点（如日落）：金色，不与早起混淆 */
+.tl-r.key{background:rgba(227,165,52,.10);border-left:3px solid var(--larch);padding-left:11px}
+.tl-r.key .tl-t{color:var(--larch)}
+.tl-r.key .tl-d b{color:var(--larch-soft)}
+@media (max-width:560px){.tl-r{grid-template-columns:50px 1fr;gap:9px;padding:8px 12px}}
+
 /* 分支内容显隐（不作用于切换按钮自身） */
 .day [data-plan],.dc-body [data-plan],main > section [data-plan]{display:none}
 .day [data-plan].on,.dc-body [data-plan].on,main > section [data-plan].on{display:block}
@@ -847,6 +877,13 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
         </div>
         <div class="dc-body">
           <p>落地即取车，当晚把油加满、检查胎压备胎。这一夜唯一的任务是把后面六天的票和证核对一遍：边防证目的地是否写成了<strong>哈巴河县白哈巴村</strong>，三个景区的票是否都已实名购妥。</p>
+          <div class="tl">
+            <div class="tl-h"><span>今日按航班弹性 · 不排早起</span><span>09:00 → 23:00</span></div>
+            <div class="tl-r"><span class="tl-t">晚间</span><span class="tl-d">落地地窝堡机场 T3，<b>取车验车</b>：划痕、胎压、备胎、ETC。</span></div>
+            <div class="tl-r"><span class="tl-t">20:30</span><span class="tl-d">入住亚朵，先去附近加油站<b>满油</b>，再查胎压备胎。</span></div>
+            <div class="tl-r"><span class="tl-t">21:30</span><span class="tl-d">国际大巴扎夜宵，边吃边核对六天票证：边防证目的地、三景区实名票、租车订单。</span></div>
+            <div class="tl-r"><span class="tl-t">23:00</span><span class="tl-d">回酒店休息，明早 9 点起、10 点前上路。</span></div>
+          </div>
           <div class="tip"><span class="lab">夜宵</span><span>国际大巴扎一带，明早出城早，别喝太晚。</span></div>
         </div>
       </article>
@@ -868,10 +905,21 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
         <div class="meters">
           <div class="meter"><div class="v">约 530<span style="font-size:11px"> km</span></div><div class="k">里程</div></div>
           <div class="meter"><div class="v">5–6 h</div><div class="k">纯行车</div></div>
-          <div class="meter"><div class="v">08:00</div><div class="k">建议出城</div></div>
+          <div class="meter"><div class="v">10:00</div><div class="k">建议出城</div></div>
         </div>
         <div class="dc-body">
-          <p>国庆首日出城高峰，八点前上路。S21 穿沙漠、路况好限速高，但<strong>服务区间隔长、补给点稀少</strong>，见到克拉美丽沙漠公园服务区就把油和水补上。</p>
+          <p>国庆首日出城高峰，<b>10 点前上路正好错开最猛的一波</b>。S21 穿沙漠、路况好限速高，但<strong>服务区间隔长、补给点稀少</strong>，见到克拉美丽沙漠公园服务区就把油和水补上。</p>
+          <div class="tl">
+            <div class="tl-h"><span>530 km 转场日 · 节奏前紧后松</span><span>09:00 → 23:00</span></div>
+            <div class="tl-r"><span class="tl-t">09:00</span><span class="tl-d">起床、酒店早餐、退房。</span></div>
+            <div class="tl-r"><span class="tl-t">10:00</span><span class="tl-d">上 <b>S21 阿乌高速</b>，出城方向车多，尽早并线。</span></div>
+            <div class="tl-r"><span class="tl-t">12:30</span><span class="tl-d">克拉美丽沙漠公园服务区：<b>补油补水、简餐午休</b>，后半段服务区更稀。</span></div>
+            <div class="tl-r"><span class="tl-t">16:00</span><span class="tl-d">抵阿勒泰，入住万驰广场迎宾路亚朵。</span></div>
+            <div class="tl-r"><span class="tl-t">17:00</span><span class="tl-d"><b>加满油</b>——明天整条阿禾公路没有加油站也没有充电桩；再查一次次日通行公告。</span></div>
+            <div class="tl-r"><span class="tl-t">19:00</span><span class="tl-d">晚餐：狗鱼 / 手抓肉，克兰河畔、驼峰公园一带散步消食。</span></div>
+            <div class="tl-r"><span class="tl-t">21:30</span><span class="tl-d">备明日干粮、热水、厚衣服（达坂 2750 m 风大）。</span></div>
+            <div class="tl-r"><span class="tl-t">23:00</span><span class="tl-d">熄灯，明天 5–6 小时山路含停拍。</span></div>
+          </div>
           <div class="tip"><span class="lab">到店后</span><span>加满油——明天整条阿禾公路没有加油站也没有充电桩；再查一次次日通行公告。</span></div>
         </div>
       </article>
@@ -900,10 +948,24 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
           <div class="meter"><div class="v">209.45<span style="font-size:11px"> km</span></div><div class="k">全长</div></div>
           <div class="meter"><div class="v">3–4 h</div><div class="k">纯行车</div></div>
           <div class="meter"><div class="v">5–6 h</div><div class="k">含停拍</div></div>
-          <div class="meter"><div class="v">08:30</div><div class="k">建议出发</div></div>
+          <div class="meter"><div class="v">10:00</div><div class="k">建议出发</div></div>
         </div>
         <div class="dc-body">
           <p>一路串起小东沟、乌希里克湿地、野卡峡、通巴原始森林、伊列克石林，全线免费。这条路本身就是景点，别把它当赶路段压时间。</p>
+          <div class="tl">
+            <div class="tl-h"><span>边走边拍 · 全程无餐饮补给</span><span>09:00 → 23:00</span></div>
+            <div class="tl-r"><span class="tl-t">09:00</span><span class="tl-d">起床、早餐、退房，市区最后上一趟洗手间、买齐干粮。</span></div>
+            <div class="tl-r"><span class="tl-t">10:00</span><span class="tl-d">进<b>阿禾公路</b>（若执行 9:30–15:00 放行，此时段内通过门票站即可）。</span></div>
+            <div class="tl-r"><span class="tl-t">10:40</span><span class="tl-d">小东沟、乌希里克湿地停拍，林带初黄。</span></div>
+            <div class="tl-r"><span class="tl-t">12:30</span><span class="tl-d">野卡峡 / 通巴原始森林路边野餐，全程无饭馆，吃自带干粮。</span></div>
+            <div class="tl-r"><span class="tl-t">14:00</span><span class="tl-d">伊列克石林、盘山达坂（最高 2750 m），弯道停车务必进停车带。</span></div>
+            <div class="tl-r"><span class="tl-t">16:00</span><span class="tl-d">抵禾木门票站，私家车停游客服务中心，换区间车进村。</span></div>
+            <div class="tl-r"><span class="tl-t">17:00</span><span class="tl-d">入住桃源山庄，放下包。</span></div>
+            <div class="tl-r"><span class="tl-t">18:00</span><span class="tl-d">上<b>哈登观景台看日落炊烟</b>，顺手踩好明早机位。</span></div>
+            <div class="tl-r"><span class="tl-t">19:30</span><span class="tl-d">村里晚餐：图瓦土火锅 / 大盘鸡。</span></div>
+            <div class="tl-r"><span class="tl-t">21:00</span><span class="tl-d">禾木桥、河边白桦林散步，晴天可看星空。</span></div>
+            <div class="tl-r"><span class="tl-t">23:00</span><span class="tl-d">回民宿。</span></div>
+          </div>
           <div class="gate">
             <div class="gate-t">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
@@ -938,11 +1000,24 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
         </div>
         <div class="meters">
           <div class="meter"><div class="v">约 2.5 h</div><div class="k">含换乘</div></div>
-          <div class="meter"><div class="v">06:30</div><div class="k">晨雾机位</div></div>
-          <div class="meter"><div class="v">17:00</div><div class="k">预约闹钟</div></div>
+          <div class="meter"><div class="v">06:30</div><div class="k">晨雾机位 ★</div></div>
+          <div class="meter"><div class="v">17:00</div><div class="k">预约闹钟 ★</div></div>
         </div>
         <div class="dc-body">
           <p>早起蹲晨雾，回住处吃早饭再出园取车。禾木到喀纳斯要出景区重新买票转车，含换乘约 2.5 小时。下午进景区先冲观鱼台，去晚排长队，之后再去湖边。</p>
+          <div class="tl">
+            <div class="tl-h"><span>晨雾 + 预约双重节点</span><span>今日需早起</span></div>
+            <div class="tl-r early"><span class="tl-t">06:30</span><span class="tl-d"><b>★ 早起：哈登观景台晨雾</b><span class="tl-tag hot">闹钟 06:00</span> 日出前到位，前一晚踩好的机位直接去；错过只能明天。</span></div>
+            <div class="tl-r"><span class="tl-t">09:00</span><span class="tl-d">回住处<b>吃早饭</b>、收拾、退房，出园取车。</span></div>
+            <div class="tl-r"><span class="tl-t">10:30</span><span class="tl-d">禾木出发往贾登峪，含买票换乘约 <b>2.5 h</b>。</span></div>
+            <div class="tl-r"><span class="tl-t">13:30</span><span class="tl-d">抵喀纳斯景区入住小九月，放下行李。</span></div>
+            <div class="tl-r"><span class="tl-t">14:30</span><span class="tl-d">先冲<b>观鱼台</b>（去晚排长队），俯瞰全湖。</span></div>
+            <div class="tl-r"><span class="tl-t">16:30</span><span class="tl-d">喀纳斯湖边慢走、游船（可选）。</span></div>
+            <div class="tl-r early"><span class="tl-t">17:00</span><span class="tl-d"><b>★ 设闹钟预约</b><span class="tl-tag hot">18:00–18:30 截止</span> 在有信号处用小程序抢 10/04 白哈巴自驾名额。</span></div>
+            <div class="tl-r"><span class="tl-t">17:20</span><span class="tl-d">游客服务中心旁边境派出所<b>免费办边防证</b>，1 分钟出证。</span></div>
+            <div class="tl-r"><span class="tl-t">19:00</span><span class="tl-d">喀纳斯村晚餐，早休息，明天还需早起看神仙湾。</span></div>
+            <div class="tl-r"><span class="tl-t">23:00</span><span class="tl-d">熄灯。</span></div>
+          </div>
           <div class="gate">
             <div class="gate-t">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4m0 4h.01M12 3l9 16H3z"/></svg>
@@ -981,11 +1056,26 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
           <div class="meter"><div class="v">54.1<span style="font-size:11px"> km</span></div><div class="k">铁贾公路</div></div>
           <div class="meter"><div class="v">2–3 h</div><div class="k">含停拍</div></div>
           <div class="meter"><div class="v">30 元</div><div class="k">白哈巴门票</div></div>
-          <div class="meter"><div class="v">17:00</div><div class="k">建议进村</div></div>
+          <div class="meter"><div class="v">17:00</div><div class="k">建议进村 ★</div></div>
         </div>
         <div class="dc-body">
           <p>早起神仙湾看晨雾，再走月亮湾到卧龙湾的木栈道——<strong>走 2 号口环线</strong>，别指望返程大巴顺路打卡，时间会非常赶。中午前出景区取车。</p>
           <p>贾登峪前约 8 公里左转进铁贾公路。这是全程最好的一段路，也是自驾名额换来的东西。</p>
+          <div class="tl" data-plan="a">
+            <div class="tl-h"><span>方案 A · 铁贾公路进白哈巴</span><span>今日需早起</span></div>
+            <div class="tl-r early"><span class="tl-t">07:00</span><span class="tl-d"><b>★ 早起：神仙湾晨雾</b><span class="tl-tag hot">闹钟 06:40</span> 区间车首班上去，晨雾只在清晨这一会儿。</span></div>
+            <div class="tl-r"><span class="tl-t">08:30</span><span class="tl-d"><b>月亮湾 → 卧龙湾</b>木栈道，走 2 号口环线。</span></div>
+            <div class="tl-r"><span class="tl-t">10:30</span><span class="tl-d">回客栈取行李、退房，<b>中午前出景区</b>到贾登峪取车。</span></div>
+            <div class="tl-r"><span class="tl-t">12:00</span><span class="tl-d">贾登峪简餐午餐。</span></div>
+            <div class="tl-r"><span class="tl-t">12:40</span><span class="tl-d">贾登峪前约 8 km 左转进<b>铁贾公路</b>，全程 54.1 km。</span></div>
+            <div class="tl-r"><span class="tl-t">13:40</span><span class="tl-d">铁热克提乡：<b>加满油</b>（再往上无加油站/充电桩）。</span></div>
+            <div class="tl-r"><span class="tl-t">14:30</span><span class="tl-d">铁热克提门票站：核预约码 + 边防证 + 买白哈巴 30 元门票。</span></div>
+            <div class="tl-r"><span class="tl-t">15:30</span><span class="tl-d">沿路停拍草原牧群、河谷，进村 30 多 km 慢开。</span></div>
+            <div class="tl-r"><span class="tl-t">17:00</span><span class="tl-d">抵白哈巴，车停新村停车场（<b>村内不能开车</b>），入住冬不拉。</span></div>
+            <div class="tl-r"><span class="tl-t">18:30</span><span class="tl-d">西北第一哨、中哈界碑、村头制高点看<b>日落金山</b>。</span></div>
+            <div class="tl-r"><span class="tl-t">20:00</span><span class="tl-d">图瓦木屋晚餐，早睡，明天早起看边境晨雾。</span></div>
+            <div class="tl-r"><span class="tl-t">23:00</span><span class="tl-d">熄灯。</span></div>
+          </div>
           <div class="gate">
             <div class="gate-t">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4m0 4h.01M12 3l9 16H3z"/></svg>
@@ -1018,6 +1108,18 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
         <div class="dc-body">
           <p>没抢到名额就别硬等。<strong>车留在贾登峪停车场</strong>，上午照常走神仙湾晨雾和三湾栈道，之后从喀纳斯换乘中心坐区间车去白哈巴，运营时段 09:00–18:30。</p>
           <p>白哈巴门票 30 元 + 区间车 45 元，边防证照样要办。村里徒步、看晨昏、逛图瓦木屋都不受影响。</p>
+          <div class="tl" data-plan="b">
+            <div class="tl-h"><span>方案 B · 区间车进白哈巴</span><span>今日需早起</span></div>
+            <div class="tl-r early"><span class="tl-t">07:00</span><span class="tl-d"><b>★ 早起：神仙湾晨雾</b><span class="tl-tag hot">闹钟 06:40</span></span></div>
+            <div class="tl-r"><span class="tl-t">08:30</span><span class="tl-d">月亮湾 → 卧龙湾 2 号口环线木栈道。</span></div>
+            <div class="tl-r"><span class="tl-t">10:30</span><span class="tl-d">回喀纳斯换乘中心，行李随身（车留贾登峪），吃午饭。</span></div>
+            <div class="tl-r"><span class="tl-t">12:30</span><span class="tl-d">换乘中心坐<b>区间车去白哈巴</b>（09:00–18:30 运营，约 1–1.5 h，45 元）。</span></div>
+            <div class="tl-r"><span class="tl-t">14:00</span><span class="tl-d">抵白哈巴，门票站核验边防证 + 30 元门票，入住冬不拉。</span></div>
+            <div class="tl-r"><span class="tl-t">15:00</span><span class="tl-d">村里徒步：西北第一哨、界碑、图瓦老木屋、白桦林。</span></div>
+            <div class="tl-r"><span class="tl-t">18:30</span><span class="tl-d">村头制高点看日落。</span></div>
+            <div class="tl-r"><span class="tl-t">20:00</span><span class="tl-d">晚餐，早睡，明早可看白哈巴晨雾。</span></div>
+            <div class="tl-r"><span class="tl-t">23:00</span><span class="tl-d">熄灯。</span></div>
+          </div>
           <div class="gate">
             <div class="gate-t">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4m0 4h.01M12 3l9 16H3z"/></svg>
@@ -1085,9 +1187,34 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
           <div data-plan="a">
             <p>这天才是自驾真正回本的时刻。早起看晨雾，然后<strong>开车去那仁牧场、中哈边境大峡谷、孤独的树</strong>（导航"白哈巴空中草原公交站"附近）——这些点位靠区间车加双腿到不了。</p>
             <p>午后走 G219 出山，141 公里约 2.5 小时到布尔津，顺路可加哈巴河白桦林景区。</p>
+            <div class="tl">
+              <div class="tl-h"><span>方案 A · 三点位 + 五彩滩日落</span><span>晨雾可选早起</span></div>
+              <div class="tl-r opt early"><span class="tl-t">07:30</span><span class="tl-d"><b>★ 可选早起：白哈巴晨雾炊烟</b><span class="tl-tag hot">闹钟 07:00</span> 不拍可睡到 9 点。</span></div>
+              <div class="tl-r"><span class="tl-t">09:00</span><span class="tl-d">起床早餐、退房取车。</span></div>
+              <div class="tl-r"><span class="tl-t">09:40</span><span class="tl-d">开车去<b>那仁牧场、中哈边境大峡谷、孤独的树</b>（导航“白哈巴空中草原公交站”附近）。</span></div>
+              <div class="tl-r"><span class="tl-t">12:00</span><span class="tl-d">回村简单午餐。</span></div>
+              <div class="tl-r"><span class="tl-t">13:00</span><span class="tl-d">走 <b>G219 出山</b>，141 km 约 2.5 h。</span></div>
+              <div class="tl-r"><span class="tl-t">15:30</span><span class="tl-d">顺路可加哈巴河白桦林景区，或直奔布尔津。</span></div>
+              <div class="tl-r"><span class="tl-t">18:30</span><span class="tl-d">抵五彩滩，日落前 1–1.5 h 到，岩层色彩最饱和。</span></div>
+              <div class="tl-r key"><span class="tl-t">约 20:00</span><span class="tl-d"><b>★ 五彩滩日落</b><span class="tl-tag">硬节点</span></span></div>
+              <div class="tl-r"><span class="tl-t">21:00</span><span class="tl-d">入住白桦林锦润酒店，<b>河堤夜市吃冷水鱼</b>（狗鱼/乔尔泰）。</span></div>
+              <div class="tl-r"><span class="tl-t">23:00</span><span class="tl-d">回酒店，明天长途回乌市。</span></div>
+            </div>
           </div>
           <div data-plan="b">
             <p>早上在村里看晨雾、走透白哈巴，之后坐区间车回喀纳斯换乘中心，出贾登峪取车，走 S232 去布尔津。这一天大半时间花在换乘和取车上，景点安排要留余量。</p>
+            <div class="tl">
+              <div class="tl-h"><span>方案 B · 返程取车 + 五彩滩日落</span><span>晨雾可选早起</span></div>
+              <div class="tl-r opt early"><span class="tl-t">07:30</span><span class="tl-d"><b>★ 可选早起：白哈巴晨雾</b><span class="tl-tag hot">闹钟 07:00</span> 不拍可 9 点起。</span></div>
+              <div class="tl-r"><span class="tl-t">09:00</span><span class="tl-d">早餐、退房，最后走一圈村子。</span></div>
+              <div class="tl-r"><span class="tl-t">10:30</span><span class="tl-d">坐区间车回喀纳斯换乘中心（注意末班方向班次）。</span></div>
+              <div class="tl-r"><span class="tl-t">12:30</span><span class="tl-d">出贾登峪停车场取车，简餐。</span></div>
+              <div class="tl-r"><span class="tl-t">13:30</span><span class="tl-d">走 S232 去布尔津，含换乘当天预留 4–5 h。</span></div>
+              <div class="tl-r"><span class="tl-t">18:30</span><span class="tl-d">抵五彩滩（若取车延误，日落优先，直接去景区）。</span></div>
+              <div class="tl-r key"><span class="tl-t">约 20:00</span><span class="tl-d"><b>★ 五彩滩日落</b><span class="tl-tag">硬节点</span></span></div>
+              <div class="tl-r"><span class="tl-t">21:00</span><span class="tl-d">入住酒店，河堤夜市冷水鱼。</span></div>
+              <div class="tl-r"><span class="tl-t">23:00</span><span class="tl-d">回酒店休息。</span></div>
+            </div>
           </div>
           <div class="tip"><span class="lab">傍晚</span><span>五彩滩旺季 45 元，日落时岩层色彩最饱和，10 月初日落约 20:00，预留 1.5–2.5 小时。晚上布尔津河堤夜市吃冷水鱼。</span></div>
         </div>
@@ -1114,6 +1241,18 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
         </div>
         <div class="dc-body">
           <p>直接走 S21 回乌鲁木齐，约 6 小时。<strong>克拉玛依油田路段和 G217 多处区间测速 80 km/h</strong>，别踩线。</p>
+          <div class="tl">
+            <div class="tl-h"><span>530 km 返程 · 全程高速</span><span>09:00 → 23:00</span></div>
+            <div class="tl-r"><span class="tl-t">09:00</span><span class="tl-d">起床早餐、退房，市区加满油。</span></div>
+            <div class="tl-r"><span class="tl-t">10:00</span><span class="tl-d">上 <b>S21</b> 南返，每 2 h 进服务区活动一次防疲劳。</span></div>
+            <div class="tl-r"><span class="tl-t">13:00</span><span class="tl-d">中途服务区午餐。</span></div>
+            <div class="tl-r opt"><span class="tl-t">可选</span><span class="tl-d">加乌尔禾魔鬼城则改走 G3014，全天车程拉到 8 h+，<b>当晚有航班不建议</b>。</span></div>
+            <div class="tl-r"><span class="tl-t">16:30</span><span class="tl-d">抵乌鲁木齐，先<b>还车</b>（预留验车、加油、交接 1 h）。</span></div>
+            <div class="tl-r"><span class="tl-t">18:00</span><span class="tl-d">入住亚朵 / 奔机场，行李寄存。</span></div>
+            <div class="tl-r"><span class="tl-t">19:30</span><span class="tl-d">大巴扎或领馆巷收尾晚餐：烤包子、手抓饭、酸奶粽子。</span></div>
+            <div class="tl-r"><span class="tl-t">21:30</span><span class="tl-d">大巴扎夜景、采购干果伴手礼。</span></div>
+            <div class="tl-r"><span class="tl-t">23:00</span><span class="tl-d">返程 / 休息，行程结束。</span></div>
+          </div>
           <div class="tip"><span class="lab">可选</span><span>想加乌尔禾魔鬼城就改走 G3014：布尔津到魔鬼城 215 公里约 3 小时，旺季 60 元 + 观光车 20 元。但全天车程会拉到 8 小时以上，<strong>若当晚有航班风险偏高</strong>。</span></div>
         </div>
       </article>
