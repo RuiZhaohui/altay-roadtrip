@@ -257,7 +257,34 @@ h1 em{font-style:normal;color:var(--larch);display:block}
 
 /* ===== 清单表 ===== */
 .checks{border:1px solid var(--line);border-bottom:none;margin:0}
-.chk{display:grid;grid-template-columns:126px 1fr;border-bottom:1px solid var(--line)}
+.chk{display:grid;grid-template-columns:44px 126px 1fr;border-bottom:1px solid var(--line);align-items:stretch}
+.chk-x{display:flex;align-items:center;justify-content:center;border-right:1px solid var(--line);background:var(--ink-2)}
+.chk-x input{width:17px;height:17px;accent-color:var(--larch);cursor:pointer}
+.chk.done{background:rgba(255,255,255,.015)}
+.chk.done .chk-b{opacity:.42}
+.chk.done .chk-b b{text-decoration:line-through;text-decoration-color:rgba(255,255,255,.55)}
+.chk.done .chk-w{opacity:.6}
+.todo-tools{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:14px;font-size:13px;color:var(--birch)}
+.todo-progress{font-family:var(--mono);font-size:12px;color:var(--larch-soft)}
+.todo-share{border:1px solid var(--line);background:var(--ink-2);color:var(--paper);padding:8px 14px;font-size:13px;cursor:pointer;font-family:inherit;transition:border-color .2s}
+.todo-share:hover{border-color:var(--larch)}
+.todo-share.copied{border-color:var(--larch);color:var(--larch)}
+.todo-note{font-size:12px;color:var(--paper-dim);flex-basis:100%;margin-top:-2px}
+
+/* ===== 天气 ===== */
+.wxgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:10px}
+.wxcard{border:1px solid var(--line);background:var(--ink-2);padding:14px 14px 12px;min-height:132px;display:flex;flex-direction:column}
+.wxcard .wx-date{font-family:var(--mono);font-size:11.5px;color:var(--larch-soft);letter-spacing:.03em}
+.wxcard .wx-place{font-size:13px;color:var(--paper);margin:2px 0 8px;font-weight:500}
+.wxcard .wx-ico{font-size:26px;line-height:1}
+.wxcard .wx-desc{font-size:12.5px;color:var(--birch);margin:6px 0 8px}
+.wxcard .wx-temp{font-size:15px;color:var(--paper);font-weight:500;margin-top:auto}
+.wxcard .wx-temp small{font-size:11px;color:var(--paper-dim);font-weight:400}
+.wxcard .wx-meta{font-size:11.5px;color:var(--paper-dim);margin-top:5px;display:flex;gap:12px;flex-wrap:wrap}
+.wxcard.wx-bad{border-color:rgba(194,69,46,.55);background:rgba(194,69,46,.08)}
+.wxcard.wx-warn{border-color:rgba(212,160,74,.5)}
+.wx-loading,.wx-error{grid-column:1/-1;border:1px dashed var(--line);padding:26px;text-align:center;color:var(--paper-dim);font-size:13.5px}
+.wx-error{color:#f5a48f;border-color:rgba(194,69,46,.45)}
 .chk-w{
   padding:14px 16px;font-family:var(--mono);font-size:11.5px;
   color:var(--larch-soft);border-right:1px solid var(--line);background:var(--ink-2);
@@ -344,8 +371,9 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
     display:flex;align-items:baseline;gap:9px}
   .day-no b{font-size:16px}
   .figs2{grid-template-columns:1fr}
-  .chk{grid-template-columns:1fr}
-  .chk-w{border-right:none;border-bottom:1px solid var(--line)}
+  .chk{grid-template-columns:44px 1fr}
+  .chk-x{display:none}
+  .chk-w{grid-column:1 / -1;border-right:none;border-bottom:1px solid var(--line)}
   .dc-head,.dc-body{padding-left:16px;padding-right:16px}
   .stat{min-width:calc(50% - 6px);flex:1 1 calc(50% - 6px)}
   .cl-row{grid-template-columns:1fr 74px;gap:8px 10px}
@@ -824,6 +852,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
       <button data-go="d5">10/05 布尔津</button>
       <button data-go="d6">10/06 乌市</button>
       <button data-go="d7">10/07 ✈返程</button>
+      <button data-go="weather">天气</button>
       <button data-go="quickcard">速查卡</button>
       <button data-go="gear">装备</button>
     </nav>
@@ -1317,27 +1346,37 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
       <h2>现在就要办的事</h2>
       <div class="tag">按截止时间倒推</div>
     </div>
-    <div class="checks">
-      <div class="chk">
+    <div class="checks" id="todos">
+      <div class="chk" data-todo="border-permit">
+        <div class="chk-x"><input type="checkbox" aria-label="已办：边防证"></div>
         <div class="chk-w">立刻</div>
         <div class="chk-b">办边防证，目的地必须填 <b>阿勒泰地区哈巴河县白哈巴村</b>。只写"喀纳斯"到了进不去。带 16 岁以下孩子需出生证明或户口本。</div>
       </div>
-      <div class="chk">
+      <div class="chk" data-todo="bookings">
+        <div class="chk-x"><input type="checkbox" aria-label="已办：核对酒店机票租车"></div>
         <div class="chk-w">已订·核对</div>
-        <div class="chk-b">酒店（6 家携程）、机票均已订；<b>租车已下单（9/30 21:00 T3 取、10/07 约 08:30 T3 还赶 11:00 航班）</b>——确认 T3 还车点早班已营业，山区优先四驱，羽绒服、防滑鞋必带。</div>
+        <div class="chk-b">酒店（6 家携程）、机票均已订；<b>租车已下单（9/30 21:00 T3 取、10/07 约 08:30 T3 还赶 11:00 的航班）</b>——确认 T3 还车点早班已营业，山区优先四驱，羽绒服、防滑鞋必带。</div>
       </div>
-      <div class="chk">
+      <div class="chk" data-todo="tickets">
+        <div class="chk-x"><input type="checkbox" aria-label="已办：实名购票与区间车班次"></div>
         <div class="chk-w hot">提前 3–7 天</div>
         <div class="chk-b">官方小程序实名购票：禾木门票+区间车、<b>喀纳斯一进票 230</b>、<b>白哈巴门票 30 + 区间车 45</b>；一并订好 10/04 下午铁热克提→白哈巴、10/05 中午白哈巴→铁热克提的区间车班次。</div>
       </div>
-      <div class="chk">
+      <div class="chk" data-todo="luggage">
+        <div class="chk-x"><input type="checkbox" aria-label="已办：行李分两套"></div>
         <div class="chk-w">出行前</div>
         <div class="chk-b"><b>行李分两套</b>：10/03 大箱留贾登峪车上、只带一晚小包进喀纳斯；10/04 取车后行李随车到铁热克提，进白哈巴只带一晚小包（身份证、充电宝、保温杯、厚外套、换洗）。</div>
       </div>
-      <div class="chk">
+      <div class="chk" data-todo="nightly-check">
+        <div class="chk-x"><input type="checkbox" aria-label="已办：当晚通行与班次确认"></div>
         <div class="chk-w">每晚</div>
         <div class="chk-b">查次日<b>阿禾公路通行公告</b>与<b>白哈巴区间车班次</b>，进山前把油加满。</div>
       </div>
+    </div>
+    <div class="todo-tools">
+      <span class="todo-progress" id="todo-progress">已办 0 / 5</span>
+      <button class="todo-share" id="todo-share" type="button">复制带勾选状态的链接</button>
+      <span class="todo-note">勾选会自动存在本机；点上面按钮复制链接发给同伴，对方打开即看到相同勾选（纯静态页面，状态只存在浏览器与链接中，不经任何服务器）。</span>
     </div>
   </section>
 
@@ -1377,6 +1416,21 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
     </span>
   </button>
+
+  <!-- ===== 实时天气 ===== -->
+  <section style="margin-top:64px" class="rise" id="weather">
+    <div class="sec-head">
+      <h2>逐日天气预报</h2>
+      <div class="tag"><button class="todo-share" id="wx-refresh" type="button" style="padding:5px 12px;font-size:12px">刷新</button> <span id="wx-updated" style="font-family:var(--mono);font-size:11.5px;color:var(--paper-dim)">读取中…</span></div>
+    </div>
+    <div class="wxgrid" id="wx-grid" aria-live="polite">
+      <div class="wx-loading">正在读取 Open-Meteo 最新预报…</div>
+    </div>
+    <div class="tip" style="margin-top:14px">
+      <span class="lab">数据</span>
+      <span>逐小时/逐日预报来自 <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>（ECMWF/GFS 模式，经纬度取沿途住宿点），打开/刷新本页即更新；山区微气候差异大，进山前再以 <b>阿勒泰气象台</b>与景区官方公告为准，雪天预留一天弹性。</span>
+    </div>
+  </section>
 
   <!-- ===== 速查卡 ===== -->
   <section style="margin-top:64px" class="rise" id="quickcard">
@@ -2489,6 +2543,173 @@ var MapView=(function(){
     });
   });
   show(parseHash(),{keepScroll:true});
+})();
+
+/* ============================================================
+   待办勾选：localStorage 本机记住 + URL hash 跨设备分享
+   ============================================================ */
+(function(){
+  var LS_KEY="altay-todo-v1", HASH_KEY="todo";
+  var box=document.getElementById("todos");
+  if(!box) return;
+  var rows=Array.prototype.slice.call(box.querySelectorAll(".chk[data-todo]"));
+  var progress=document.getElementById("todo-progress");
+
+  function readHash(){
+    var m=location.hash.match(new RegExp("#?"+HASH_KEY+"=([^&]+)"));
+    if(!m) return null;
+    var set={};
+    try{ decodeURIComponent(m[1]).split(",").forEach(function(id){ if(id) set[id]=1; }); }catch(e){ return null; }
+    return set;
+  }
+  function readStore(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY)||"{}"); }catch(e){ return {}; }
+  }
+  function saveStore(s){ try{ localStorage.setItem(LS_KEY,JSON.stringify(s)); }catch(e){} }
+
+  /* 分享链接里的状态优先：打开即同步到本机，随后清掉 hash 保持地址干净 */
+  var state=readHash();
+  if(state){
+    saveStore(state);
+    history.replaceState(null,"",location.pathname+location.search);
+  }else{
+    state=readStore();
+  }
+
+  function render(){
+    var done=0;
+    rows.forEach(function(row){
+      var id=row.getAttribute("data-todo");
+      var cb=row.querySelector("input[type=checkbox]");
+      var on=!!state[id];
+      cb.checked=on;
+      row.classList.toggle("done",on);
+      if(on) done++;
+    });
+    if(progress) progress.textContent="已办 "+done+" / "+rows.length;
+  }
+  box.addEventListener("change",function(e){
+    var cb=e.target.closest("input[type=checkbox]");
+    if(!cb) return;
+    var row=cb.closest(".chk[data-todo]");
+    state[row.getAttribute("data-todo")]=cb.checked?1:0;
+    if(!cb.checked) delete state[row.getAttribute("data-todo")];
+    saveStore(state); render();
+  });
+  render();
+
+  var share=document.getElementById("todo-share");
+  if(share) share.addEventListener("click",function(){
+    var ids=rows.filter(function(r){ return r.querySelector("input").checked; })
+               .map(function(r){ return r.getAttribute("data-todo"); });
+    var url=location.origin+location.pathname+location.search+"#"+HASH_KEY+"="+ids.join(",");
+    var btn=this;
+    function ok(){ btn.textContent="已复制 ✓"; btn.classList.add("copied");
+      setTimeout(function(){ btn.textContent="复制带勾选状态的链接"; btn.classList.remove("copied"); },2200); }
+    function fallback(){
+      var i=document.createElement("input"); i.value=url; document.body.appendChild(i);
+      i.select();
+      try{ document.execCommand("copy"); ok(); }catch(e){ window.prompt("复制此链接：",url); }
+      document.body.removeChild(i);
+    }
+    if(navigator.clipboard && window.isSecureContext){
+      navigator.clipboard.writeText(url).then(ok).catch(fallback);
+    }else fallback();
+  });
+})();
+
+/* ============================================================
+   逐日天气：Open-Meteo（免费、无 key），按住宿点坐标请求
+   ============================================================ */
+(function(){
+  var grid=document.getElementById("wx-grid");
+  var updated=document.getElementById("wx-updated");
+  var refresh=document.getElementById("wx-refresh");
+  if(!grid) return;
+
+  /* 行程每日主停留点（住宿/活动坐标） */
+  var DAYS=[
+    {d:"09/30",date:"2026-09-30",place:"乌鲁木齐 · 落地",lat:43.8256,lon:87.6168},
+    {d:"10/01",date:"2026-10-01",place:"阿勒泰市",lat:47.8449,lon:88.1413},
+    {d:"10/02",date:"2026-10-02",place:"禾木村",lat:48.5686,lon:87.4330},
+    {d:"10/03",date:"2026-10-03",place:"喀纳斯村",lat:48.7600,lon:87.0200},
+    {d:"10/04",date:"2026-10-04",place:"白哈巴村",lat:48.6931,lon:86.7850},
+    {d:"10/05",date:"2026-10-05",place:"布尔津 · 五彩滩",lat:47.7019,lon:86.8750},
+    {d:"10/06",date:"2026-10-06",place:"乌伦古湖 → 乌鲁木齐",lat:47.5000,lon:87.3000},
+    {d:"10/07",date:"2026-10-07",place:"乌鲁木齐 · 返程航班",lat:43.8256,lon:87.6168}
+  ];
+  var POINTS={};
+  DAYS.forEach(function(x){
+    var key=x.lat.toFixed(3)+","+x.lon.toFixed(3);
+    (POINTS[key]=POINTS[key]||{lat:x.lat,lon:x.lon,daily:null}).ref=1;
+  });
+
+  var WMO={
+    0:["☀️","晴"],1:["🌤","少云"],2:["⛅","多云"],3:["☁️","阴"],
+    45:["🌫","雾"],48:["🌫","冻雾"],
+    51:["🌦","小毛雨"],53:["🌦","毛雨"],55:["🌧","浓毛雨"],
+    56:["🌧","冻毛雨"],57:["🌧","强冻毛雨"],
+    61:["🌦","小雨"],63:["🌧","中雨"],65:["🌧","大雨"],
+    66:["🌧","冻雨"],67:["🌧","强冻雨"],
+    71:["🌨","小雪"],73:["🌨","中雪"],75:["❄️","大雪"],77:["🌨","米雪"],
+    80:["🌦","小阵雨"],81:["🌧","阵雨"],82:["🌧","强阵雨"],
+    85:["🌨","小阵雪"],86:["❄️","强阵雪"],
+    95:["⛈","雷阵雨"],96:["⛈","雷雨冰雹"],99:["⛈","强雷雨冰雹"]
+  };
+
+  function fail(msg){
+    grid.innerHTML='<div class="wx-error">天气预报读取失败：'+msg+'<br>可点右上角“刷新”重试，或直接看 <a href="https://www.weather.com.cn/xinjiang/">中国天气网·新疆</a> / 阿勒泰气象台。</div>';
+    if(updated) updated.textContent="读取失败";
+  }
+
+  function load(){
+    grid.innerHTML='<div class="wx-loading">正在读取 Open-Meteo 最新预报…</div>';
+    if(updated) updated.textContent="读取中…";
+    var keys=Object.keys(POINTS);
+    Promise.all(keys.map(function(k){
+      var p=POINTS[k];
+      var url="https://api.open-meteo.com/v1/forecast?latitude="+p.lat+"&longitude="+p.lon+
+        "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,wind_speed_10m_max"
+        +"&wind_speed_unit=kmh&timezone=Asia%2FShanghai&forecast_days=10";
+      return fetch(url).then(function(r){
+        if(!r.ok) throw new Error("HTTP "+r.status);
+        return r.json();
+      }).then(function(j){ p.daily=j.daily; }).catch(function(e){ p.error=e.message; });
+    })).then(function(){
+      var html="";
+      var missing=0;
+      DAYS.forEach(function(day){
+        var p=POINTS[day.lat.toFixed(3)+","+day.lon.toFixed(3)];
+        if(!p.daily){ missing++; html+='<div class="wxcard wx-bad"><div class="wx-date">'+day.d+'</div><div class="wx-place">'+day.place+'</div><div class="wx-desc">数据暂缺</div></div>'; return; }
+        var i=p.daily.time.indexOf(day.date);
+        if(i<0){ missing++; return; }
+        var code=p.daily.weather_code[i], info=WMO[code]||["🌡","代码"+code];
+        var tmax=Math.round(p.daily.temperature_2m_max[i]), tmin=Math.round(p.daily.temperature_2m_min[i]);
+        var pop=p.daily.precipitation_probability_max[i]; if(pop==null) pop="—";
+        var psum=p.daily.precipitation_sum[i];
+        var wind=Math.round(p.daily.wind_speed_10m_max[i]);
+        var snow=code>=71&&code<=77||code===85||code===86;
+        var rain=(code>=61&&code<=67)||code>=80&&code<=82||code>=95;
+        var cls=snow?"wx-bad":(rain||pop>=60?"wx-warn":"");
+        var snowHint=snow?'<b style="color:#cfe3f5"> · 有雪，备雪地胎/弹性</b>':"";
+        html+='<div class="wxcard '+cls+'">'
+          +'<div class="wx-date">'+day.d+' 周'+"日一二三四五六"[new Date(day.date+"T00:00+08:00").getDay()]+'</div>'
+          +'<div class="wx-place">'+day.place+'</div>'
+          +'<div class="wx-ico">'+info[0]+'</div>'
+          +'<div class="wx-desc">'+info[1]+snowHint+'</div>'
+          +'<div class="wx-temp">'+tmax+'° <small>/ '+tmin+'°</small></div>'
+          +'<div class="wx-meta"><span>💧 '+pop+'%</span><span>'+psum+' mm</span><span>💨 '+wind+' km/h</span></div>'
+          +'</div>';
+      });
+      grid.innerHTML=html;
+      var now=new Date();
+      function pad(n){return (n<10?"0":"")+n;}
+      if(updated) updated.textContent="更新于 "+pad(now.getHours())+":"+pad(now.getMinutes())+(missing?"（部分缺失）":"");
+      if(missing===DAYS.length) fail("未来日期可能超出预报窗口（通常提供 10–16 天）");
+    }).catch(function(e){ fail(e.message); });
+  }
+  if(refresh) refresh.addEventListener("click",load);
+  load();
 })();
 
 </script>
